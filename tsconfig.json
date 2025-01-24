@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,                             /* Enables default imports for CommonJS modules. */
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"]
+}
