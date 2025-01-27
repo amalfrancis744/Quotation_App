@@ -21,10 +21,15 @@ export const STATUS_CODE = {
   export const ERROR_MSGS = {
     EMAIL_NOT_VERIFIED: 'Email not verified',
     UPDATED_FAILED: 'Update Failed',
+    COMPANY_DELETED:"Company deleted successfully",
+    
     DELETE_FAILED: 'Delete Failed',
     DATA_NOT_FOUND: 'Data not found',
+    COMPANY_ALREADY_EXISTS:'CompanyName already exists',
     WENT_WRONG: 'Something went wrong. Please try again later.',
-   
+    EMAIL_ALREADY_EXISTS:"Company with email, already exists",
+    COMPANY_CREATED_SUCCESSFULLY:"company created successfully",
+    COMPANY_ID_REQUIRED:"CompanyId is required",
     INVALID_VERIFICATION_TOKEN:
       'The provided verification token is invalid or Expired. Please verify and try again.',
     EMAIL_EXISTS: 'Email already exists.',
@@ -33,6 +38,7 @@ export const STATUS_CODE = {
     ACCOUNT_NOT_FOUND: 'Account not found, invalid email.',
     INVALID_LOGIN: 'Invalid email or password.',
     USER_NOT_FOUND: 'User not found.',
+    COMAPNY_NOT_FOUND:"Invalid company or invalid company data",
     INVALID_TOKEN: 'Invalid token',
     TOKEN_EXPIRED: 'Token has expired.',
     BAD_AUTH: 'Bad authorization!',
@@ -57,26 +63,10 @@ export const STATUS_CODE = {
     SUCCESSFUL_LOGIN: 'Successfully logged in.',
     PASSWORD_CHANGED: 'Your password has been changed successfully.',
     RESET_EMAIL: 'Reset password email sent successfully.',
-  
-    // QuickBook
-    ACCOUNTANT_MAIL_SENT:
-      'Successfully sent mail to connect your QuickBooks Online (QBO) account.',
-  
-    // Permission
-    PERMISSION_EMAIL:
-      'A consent request will be automatically sent to the applicant.',
-    CONSENT_RESEND: 'A consent request was resent to the applicant.',
-    PERMISSION_ASSIGN: 'Permission successfully assigned.',
-    QBO_GRANTED:
-      'Accounting data access is granted because at least one owner/applicant has approved.',
-    ESC_GRANTED:
-      'Credit data access is granted because all owners/applicants have approved.',
-    QBO_PENDING:
-      'Accounting data access is pending because no owners/applicants have approved yet.',
-    ESC_PENDING:
-      'Credit data access is pending because not all owners/applicants have approved.',
-  
-    
+
+    COMPANY_FETCHED:"Company fethed successfullt",
+    COMPANY_UPDATED_SUCCESSFULLY:"Company data updated successfully",
+
     EMAIL_VERIFIED: 'User Email verification successfully completed'
   } as const
   

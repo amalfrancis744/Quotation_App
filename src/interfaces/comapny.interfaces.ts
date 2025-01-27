@@ -13,9 +13,14 @@ interface IAccountDetails {
   isActive: boolean;
 }
 export interface ICompany extends Document {
-  name: string;
+  companyName: string;
   alias: string;
+  mobileNo:number;
+  state:string;
+  email:string;
   addresses: IAddress[];
   accountDetails: IAccountDetails[];
   website: string;
+  isDeleted: boolean;
+  deletedAt?: Date;
 }

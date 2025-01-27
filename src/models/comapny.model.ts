@@ -3,21 +3,31 @@ import { ICompany } from "../interfaces/comapny.interfaces";
 
 const CompanySchema: Schema = new Schema(
   {
-    name: {
+    companyName: {
       type: String,
       required: true,
     },
     alias: {
       type: String,
     },
+    mobileNo:{
+      type:String,
+    },
+    state:{
+      type:String
+    },
+    email:{
+      type:String
+    },
     addresses: [
       {
         // for storing the address of the comapny
-        address: { type: String, required: true },
-        city: { type: String, required: true },
-        pincode: { type: String, required: true },
-        district: { type: String, required: true },
-        state: { type: String, required: true },
+        address: { type: String },
+        city: { type: String, },
+        pincode: { type: String, },
+        district: { type: String, },
+        state: { type: String, },
+        isActive: { type: Boolean, required: true, default: true },
       },
     ],
     accountDetails: [
@@ -29,15 +39,20 @@ const CompanySchema: Schema = new Schema(
         email: {
           type: String,
           required: true,
-          unique: true,
-          lowercase: true,
-          trim: true,
         },
-        isActive: { type: Boolean, required: true, default: true },
       },
     ],
     website: {
       type: String,
+    },
+    isDeleted: { 
+      type: Boolean, 
+      default: false, 
+      required: true 
+    },
+    deletedAt: { 
+      type: Date, 
+      default: null 
     },
   },
   {
