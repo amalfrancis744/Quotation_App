@@ -3,6 +3,14 @@ import { IUser } from "../interfaces/user.interfaces";
 
 const UserSchema = new mongoose.Schema<IUser>(
   {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -12,9 +20,18 @@ const UserSchema = new mongoose.Schema<IUser>(
       type: String,
       required: true,
     },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+      required: true,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
-    timestamps: true,
+    timestamps: true, // This adds createdAt and updatedAt fields automatically
   }
 );
 

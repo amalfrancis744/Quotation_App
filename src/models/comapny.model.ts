@@ -21,7 +21,7 @@ const CompanySchema: Schema = new Schema(
     },
     addresses: [
       {
-        // for storing the address of the comapny
+      
         address: { type: String },
         city: { type: String, },
         pincode: { type: String, },
@@ -32,7 +32,7 @@ const CompanySchema: Schema = new Schema(
     ],
     accountDetails: [
       {
-        // for storing the accountdetailes of the company
+       
         name: { type: String, required: true },
         accType: { type: String, required: true },
         mobileNo: { type: String, required: true },

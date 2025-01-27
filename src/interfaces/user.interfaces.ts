@@ -9,4 +9,5 @@ export interface IUser {
     lastName: string;
     createdAt: Date;
     updatedAt: Date;
- }
+    isActive:Boolean
+}

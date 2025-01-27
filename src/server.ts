@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import connectDB from "./connection/DBconnection";
 import cors from 'cors';
-// Load environment variables from .env file
 dotenv.config();
 import { apiRouter } from "./routes";
 
@@ -16,8 +15,8 @@ app.use(express.json());
 // setup cors
 
 const corsOptions = {
-  origin:"*", // allow all origins
-  optionsSuccessStatus: 200 // 
+  origin:"*", 
+  optionsSuccessStatus: 200 
 
 }
 app.use('/api',apiRouter)
