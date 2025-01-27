@@ -4,6 +4,7 @@ import connectDB from "./connection/DBconnection";
 import cors from 'cors';
 // Load environment variables from .env file
 dotenv.config();
+import { apiRouter } from "./routes";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ const corsOptions = {
   optionsSuccessStatus: 200 // 
 
 }
+app.use('/api',apiRouter)
 
 app.use(cors(corsOptions));
 
