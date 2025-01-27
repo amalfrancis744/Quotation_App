@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 // Load environment variables from .env file
 dotenv.config();
 
-const dbUri: string = process.env.MONGODB_URI || 'mongodb://localhost:27017/quotation-app';
+const dbUri: string = process.env.MONGODB_URI || 'mongodb://localhost:27017/quotationapp';
 
 const connectDB = async (): Promise<void> => {
   try {

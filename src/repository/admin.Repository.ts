@@ -3,7 +3,7 @@ import { IAdmin } from "../interfaces/admin.interface";
 
 export const findAdminByUsername = async (
   username: string
-): Promise<IAdmin> => {
+)=> {
   try {
     const admin = await Admin.findOne({ username });
 
@@ -12,30 +12,26 @@ export const findAdminByUsername = async (
     }
 
     return admin;
-  } catch (error) {
-    throw new Error(
-      `Error finding admin: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }`
-    );
+  } catch (error:any) {
+    error.message
+    
   }
 };
+
+
+
 export const createAdmin = async ({
   username,
   password,
 }: {
   username: string;
   password: string;
-}): Promise<IAdmin> => {
+})=> {
   try {
     const newAdmin = new Admin({ username, password });
     await newAdmin.save();
     return newAdmin;
-  } catch (error) {
-    throw new Error(
-      `Error creating admin: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }`
-    );
+  } catch (error:any) {
+   error.message
   }
 };
