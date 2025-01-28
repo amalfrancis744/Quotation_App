@@ -15,7 +15,7 @@ interface IAccountDetails {
 export interface ICompany extends Document {
   companyName: string;
   alias: string;
-  mobileNo:number;
+  mobileNo:string;
   state:string;
   email:string;
   addresses: IAddress[];

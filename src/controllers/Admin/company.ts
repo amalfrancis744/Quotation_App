@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { GlobleResponse } from "../../utils/response";
 import httpStatus from "http-status";
-import { ERROR_MSGS, INFO_MSGS, STATUS_CODE } from "../../utils/constant";
+import { ERROR_MSGS, INFO_MSGS } from "../../utils/constant";
 import * as companyRepository from "../../repository/company.Repository";
 import { Company } from "../../models/comapny.model";
 

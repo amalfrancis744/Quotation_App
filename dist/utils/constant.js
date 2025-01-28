@@ -1,4 +1,7 @@
-export const STATUS_CODE = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DATE_FORMAT_REPORT = exports.REPORT_DATE_FORMAT = exports.INFO_MSGS = exports.ERROR_MSGS = exports.STATUS_CODE = void 0;
+exports.STATUS_CODE = {
     OK: 200,
     TRIPLEA: 151,
     CREATED: 201,
@@ -16,33 +19,29 @@ export const STATUS_CODE = {
     INTERNAL_SERVER_ERROR: 500,
     SERVICE_UNAVAILABLE: 503,
     SERVER_TIMEOUT: 504
-  } as const
-  
-  export const ERROR_MSGS = {
+};
+exports.ERROR_MSGS = {
     EMAIL_NOT_VERIFIED: 'Email not verified',
     UPDATED_FAILED: 'Update Failed',
-    COMPANY_DELETED:"Company deleted successfully",
-    INVALID_COMPANY_ID:"Invalid company ID",
-    COMPANY_ALREADY_USE:"This company is already associated with another user.",
-    USER_NOT_ACTIVE :"User is not active",
+    COMPANY_DELETED: "Company deleted successfully",
+    INVALID_COMPANY_ID: "Invalid company ID",
+    COMPANY_ALREADY_USE: "This company is already associated with another user.",
+    USER_NOT_ACTIVE: "User is not active",
     DELETE_FAILED: 'Delete Failed',
     DATA_NOT_FOUND: 'Data not found',
-    COMPANY_ALREADY_EXISTS:'CompanyName already exists',
+    COMPANY_ALREADY_EXISTS: 'CompanyName already exists',
     WENT_WRONG: 'Something went wrong. Please try again later.',
-    EMAIL_ALREADY_EXISTS:"Company with email, already exists",
-    COMPANY_CREATED_SUCCESSFULLY:"company created successfully",
-    COMPANY_ID_REQUIRED:"CompanyId is required",
-    
-    INVALID_VERIFICATION_TOKEN:
-      'The provided verification token is invalid or Expired. Please verify and try again.',
+    EMAIL_ALREADY_EXISTS: "Company with email, already exists",
+    COMPANY_CREATED_SUCCESSFULLY: "company created successfully",
+    COMPANY_ID_REQUIRED: "CompanyId is required",
+    INVALID_VERIFICATION_TOKEN: 'The provided verification token is invalid or Expired. Please verify and try again.',
     EMAIL_EXISTS: 'Email already exists.',
     EMAIL_SENT: 'Email already sent.',
     DOB_FAILED: 'Sorry, the owner must be at least 18 years old to proceed.',
     ACCOUNT_NOT_FOUND: 'Account not found, invalid email.',
     INVALID_LOGIN: 'Invalid email or password.',
     USER_NOT_FOUND: 'User not found.',
-
-    COMAPNY_NOT_FOUND:"Invalid company or invalid company data",
+    COMAPNY_NOT_FOUND: "Invalid company or invalid company data",
     INVALID_TOKEN: 'Invalid token',
     TOKEN_EXPIRED: 'Token has expired.',
     BAD_AUTH: 'Bad authorization!',
@@ -54,28 +53,21 @@ export const STATUS_CODE = {
     INVALID_ROLE: 'Invalid role.',
     EMAIL_ALREADY_VERIFIED: 'Email is already verified',
     UNAUTH_DATA_FETCH: 'You are unauthorized to retrieve the data.',
-    INVALID_PASS:'Invalid password',
-    INVALID_CREDETIALS:"Credentials are missing",
+    INVALID_PASS: 'Invalid password',
+    INVALID_CREDETIALS: "Credentials are missing",
     INVALID_PASSWORD: 'Invalid password',
     NO_TOKEN: 'No authentication token provided.',
-   
-
-  } as const
-  
-  export const INFO_MSGS = {
+};
+exports.INFO_MSGS = {
     SUCCESS: 'Request Success',
-  
     // Auth
     SUCCESSFUL_REGISTER: 'Registered successfully!',
     SUCCESSFUL_LOGIN: 'Successfully logged in.',
     PASSWORD_CHANGED: 'Your password has been changed successfully.',
     RESET_EMAIL: 'Reset password email sent successfully.',
-
-    COMPANY_FETCHED:"Company fethed successfullt",
-    COMPANY_UPDATED_SUCCESSFULLY:"Company data updated successfully",
-
+    COMPANY_FETCHED: "Company fethed successfullt",
+    COMPANY_UPDATED_SUCCESSFULLY: "Company data updated successfully",
     EMAIL_VERIFIED: 'User Email verification successfully completed'
-  } as const
-  
-
-  
+};
+exports.REPORT_DATE_FORMAT = 'MMMM DD, YYYY';
+exports.DATE_FORMAT_REPORT = 'MMM DD, YYYY h:mm a';

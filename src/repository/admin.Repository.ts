@@ -1,9 +1,7 @@
 import { Admin } from "../models/admin.model";
 import { IAdmin } from "../interfaces/admin.interface";
 
-export const findAdminByUsername = async (
-  username: string
-)=> {
+export const findAdminByUsername = async (username: string) => {
   try {
     const admin = await Admin.findOne({ username });
 
@@ -12,13 +10,10 @@ export const findAdminByUsername = async (
     }
 
     return admin;
-  } catch (error:any) {
-    error.message
-    
+  } catch (error: any) {
+    error.message;
   }
 };
-
-
 
 export const createAdmin = async ({
   username,
@@ -26,12 +21,12 @@ export const createAdmin = async ({
 }: {
   username: string;
   password: string;
-})=> {
+}) => {
   try {
     const newAdmin = new Admin({ username, password });
     await newAdmin.save();
     return newAdmin;
-  } catch (error:any) {
-   error.message
+  } catch (error: any) {
+    error.message;
   }
 };

@@ -10,7 +10,6 @@ import mongoose from "mongoose";
 export const AddCompanyUser = async (
   req: Request,
   res: Response,
-  next: NextFunction
 ): Promise<void> => {
   try {
     const { firstName, lastName, email, password, companyId } = req.body;
@@ -21,7 +20,7 @@ export const AddCompanyUser = async (
       return GlobleResponse.error({
         res,
         status: httpStatus.BAD_REQUEST,
-        msg: "Credentials are missing",
+        msg: ERROR_MSGS.INVALID_CREDETIALS,
       });
     }
     if(!mongoose.Types.ObjectId.isValid(companyId)){
@@ -29,7 +28,7 @@ export const AddCompanyUser = async (
         return GlobleResponse.error({
             res,
             status: httpStatus.BAD_REQUEST,
-            msg: "Invalid Company ID",
+            msg: ERROR_MSGS.INVALID_COMPANY_ID,
         })
     }
 
@@ -50,7 +49,7 @@ export const AddCompanyUser = async (
         return GlobleResponse.error({
             res,
             status: httpStatus.BAD_REQUEST,
-            msg: "Company not found the given ID",
+            msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
         })
 
     }
@@ -64,7 +63,7 @@ export const AddCompanyUser = async (
       return GlobleResponse.error({
         res,
         status: httpStatus.BAD_REQUEST,
-        msg: "This company is already associated with another user.",
+        msg: ERROR_MSGS.COMPANY_ALREADY_USE
       });
     }
 

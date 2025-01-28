@@ -6,7 +6,7 @@ export const findAllCompanies = async () => {
     const allCompany = await Company.find();
     return allCompany;
   } catch (error) {
-     throw error
+    throw error;
   }
 };
 
@@ -25,13 +25,11 @@ export const findCompanyNameByCompany = async (companyName: string) => {
 
 export const findEmailByCompany = async (email: string) => {
   try {
-  
     const company = await Company.findOne({ email });
 
     return company;
   } catch (error) {
-   
-   throw error
+    throw error;
   }
 };
 
@@ -39,9 +37,9 @@ export const findCompanyById = async (id: string) => {
   try {
     // No need for {_id: id}, can pass id directly to findById
     const company = await Company.findById(id);
-    return company
+    return company;
   } catch (error) {
-    throw error
+    throw error;
   }
 };
 
@@ -58,7 +56,7 @@ export const findEmailByEmailCompanyId = async (
     });
     return getEmail;
   } catch (error) {
-    throw error
+    throw error;
   }
 };
 
@@ -71,22 +69,21 @@ export const findCompayByCompanyNameAndSame = async (
       companyName,
       _id: { $ne: companyId },
     });
-    return company
+    return company;
   } catch (error) {
-    throw error
+    throw error;
   }
 };
 
 export const findByIdAndUpdate = async (id: string, data: any) => {
-    try {
-        const updatedCompany = await Company.findByIdAndUpdate(
-            id, 
-            data,
-            { new: true, runValidators: true }
-        );
-        return updatedCompany;
-    } catch (error) {
-        console.error("Error in findByIdAndUpdate:", error);
-        throw error;
-    }
+  try {
+    const updatedCompany = await Company.findByIdAndUpdate(id, data, {
+      new: true,
+      runValidators: true,
+    });
+    return updatedCompany;
+  } catch (error) {
+    console.error("Error in findByIdAndUpdate:", error);
+    throw error;
+  }
 };

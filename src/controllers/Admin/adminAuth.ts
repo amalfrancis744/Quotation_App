@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { Response, Request, NextFunction } from "express";
 import { GlobleResponse } from "../../utils/response";
 import httpStatus from "http-status";
-import { ERROR_MSGS, INFO_MSGS, STATUS_CODE } from "../../utils/constant";
+import { ERROR_MSGS, INFO_MSGS } from "../../utils/constant";
 import * as adminRepository from "../../repository/admin.Repository";
 import jwt from "jsonwebtoken";
 
@@ -10,7 +10,6 @@ import jwt from "jsonwebtoken";
 export const registerAdmin = async (
   req: Request,
   res: Response
-  // next: NextFunction
 ): Promise<void> => {
   try {
     const { username, password } = req.body;
@@ -33,7 +32,7 @@ export const registerAdmin = async (
     // Existing success response
     const obj = {
       res,
-      status: STATUS_CODE.CREATED,
+      status: httpStatus.CREATED,
       msg: INFO_MSGS.SUCCESSFUL_REGISTER,
       data: { username },
     };
@@ -52,7 +51,6 @@ export const registerAdmin = async (
 export const loginAdmin = async (
   req: Request,
   res: Response,
-  next: NextFunction
 ): Promise<void> => {
   try {
     const { username, password } = req.body;

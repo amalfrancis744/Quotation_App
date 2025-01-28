@@ -1,9 +1,9 @@
 
 import mongoose, { Schema } from "mongoose";
 
-import { IAdmin } from "../interfaces/admin.interface";
+import { IAdmin } from '../interfaces/admin.interface';
 
-const AdminSchema:Schema = new Schema(
+const AdminSchema:Schema<IAdmin> = new mongoose.Schema<IAdmin>(
 
     {
         username:{

@@ -1,6 +1,5 @@
 
 export interface IUser {
-
     id: string;
     email: string;
     password: string;
@@ -10,4 +9,5 @@ export interface IUser {
     createdAt: Date;
     updatedAt: Date;
     isActive:Boolean
+    
 }
