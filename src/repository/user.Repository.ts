@@ -1,6 +1,7 @@
-import { User } from "../models/user.model";
+import { User } from "../models/user.model"; // Import required models
 import ResetPassword from "../models/resetPassword.model";
 
+// Find a user document by their email address
 export const findUserByEmail = async (email: string) => {
   try {
     const user = await User.findOne({ email });
@@ -11,6 +12,8 @@ export const findUserByEmail = async (email: string) => {
   }
 };
 
+// Update a user document by ID with provided data
+// Returns true if update was successful
 export const updateById = async (id: string, data: any) => {
   try {
     await User.findByIdAndUpdate(id, data);
@@ -21,6 +24,7 @@ export const updateById = async (id: string, data: any) => {
   }
 };
 
+// Find a user document by their MongoDB ObjectId
 export const findUserById = async (id: string) => {
   try {
     const user = await User.findById(id);
@@ -31,7 +35,7 @@ export const findUserById = async (id: string) => {
   }
 };
 
-// Repository function for finding a user by companyId
+// Find a user document associated with a specific company ID
 export const findUserByCompanyId = async (companyId: string) => {
   try {
     const user = await User.findOne({ companyId });
@@ -42,7 +46,7 @@ export const findUserByCompanyId = async (companyId: string) => {
   }
 };
 
-// Repository function for creating a user
+// Create a new user document with provided user data
 export const createUser = async (userData: any) => {
   try {
     const user = new User(userData);
@@ -54,8 +58,7 @@ export const createUser = async (userData: any) => {
   }
 };
 
-
-// delete token from the resetPassword collection
+// Delete a password reset token document for a specific user
 export const deleteToken = async (userId: any) => {
   try {
     await ResetPassword.deleteOne({
@@ -68,6 +71,7 @@ export const deleteToken = async (userId: any) => {
   }
 };
 
+// Create a new password reset token document for a user
 export const createResetPasswordToken = async (data: any) => {
   try {
     const resetPasswordToken = new ResetPassword(data);

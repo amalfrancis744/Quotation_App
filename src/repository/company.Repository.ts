@@ -1,6 +1,6 @@
-import status from "http-status";
 import { Company } from "../models/comapny.model";
 
+// Retrieve all companies from the database
 export const findAllCompanies = async () => {
   try {
     const allCompany = await Company.find();
@@ -10,6 +10,7 @@ export const findAllCompanies = async () => {
   }
 };
 
+// Find a company by exact company name (case-insensitive)
 export const findCompanyNameByCompany = async (companyName: string) => {
   try {
     const company = await Company.findOne({
@@ -23,16 +24,17 @@ export const findCompanyNameByCompany = async (companyName: string) => {
   }
 };
 
+// Find a company by email address
 export const findEmailByCompany = async (email: string) => {
   try {
     const company = await Company.findOne({ email });
-
     return company;
   } catch (error) {
     throw error;
   }
 };
 
+// Find a company by its MongoDB ObjectId
 export const findCompanyById = async (id: string) => {
   try {
     // No need for {_id: id}, can pass id directly to findById
@@ -43,8 +45,7 @@ export const findCompanyById = async (id: string) => {
   }
 };
 
-// find email by email and companyId
-
+// Find a company by email, excluding a specific company ID
 export const findEmailByEmailCompanyId = async (
   normalizedEmail: string,
   companyId: string
@@ -60,6 +61,7 @@ export const findEmailByEmailCompanyId = async (
   }
 };
 
+// Find a company by name, excluding a specific company ID
 export const findCompayByCompanyNameAndSame = async (
   companyName: string,
   companyId: string
@@ -75,11 +77,12 @@ export const findCompayByCompanyNameAndSame = async (
   }
 };
 
+// Update a company by ID with new data
 export const findByIdAndUpdate = async (id: string, data: any) => {
   try {
     const updatedCompany = await Company.findByIdAndUpdate(id, data, {
-      new: true,
-      runValidators: true,
+      new: true, 
+      runValidators: true, 
     });
     return updatedCompany;
   } catch (error) {

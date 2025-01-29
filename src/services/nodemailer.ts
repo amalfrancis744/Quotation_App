@@ -18,7 +18,6 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async (msg: any) => {
     try {
       const info = await transporter.sendMail(msg)
-      // console.log("Email sent:", info.response);
     } catch (error) {
       console.error('Error sending email:', error)
     }
@@ -40,7 +39,7 @@ export const sendEmail = async (msg: any) => {
       </p>
       <p style="font-size: 16px; color: #333;">This link will expire in 10 minitues.</p>
       <p style="font-size: 16px; color: #333;">If you did not request this, please ignore this email.</p>
-      <p style="font-size: 16px; color: #333;">This is an auto-generated email, for help email us at <a href="mailto:support@gmail.com" style="color: rgb(17, 70, 132); text-decoration: none;">support@subtraid.com</a></p>
+      <p style="font-size: 16px; color: #333;">This is an auto-generated email, for help email us at <a href="mailto:support@gmail.com" style="color: rgb(17, 70, 132); text-decoration: none;">support@gmail.com</a></p>
       <p style="font-size: 16px; color: #333;">Thank you,</p>
       <p style="font-size: 16px; color: #333;">Support Team</p>
       <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #777;">
