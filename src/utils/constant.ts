@@ -55,7 +55,7 @@ export const STATUS_CODE = {
     EMAIL_ALREADY_VERIFIED: 'Email is already verified',
     UNAUTH_DATA_FETCH: 'You are unauthorized to retrieve the data.',
     INVALID_PASS:'Invalid password',
-    INVALID_CREDETIALS:"Credentials are missing",
+    INVALID_CREDENTIALS:"Credentials are missing",
     INVALID_PASSWORD: 'Invalid password',
     NO_TOKEN: 'No authentication token provided.',
    
@@ -74,7 +74,9 @@ export const STATUS_CODE = {
     COMPANY_FETCHED:"Company fethed successfullt",
     COMPANY_UPDATED_SUCCESSFULLY:"Company data updated successfully",
 
-    EMAIL_VERIFIED: 'User Email verification successfully completed'
+    EMAIL_VERIFIED: 'User Email verification successfully completed',
+    TOKEN_VALID:'Token validation is completed successfully',
+    USER_DATA_FETCHED:"User data fetched successfully"
   } as const
   
 

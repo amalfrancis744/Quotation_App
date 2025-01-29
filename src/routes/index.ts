@@ -1,14 +1,11 @@
 import express from "express";
-
-// Admin-Side
-import AdminRoutes from "./Admin/admin.routes";
-
-// Company-user side
-import UserRoutes from "./CompanyUser/user.routes";
+import AdminRoutes from "./Admin/admin.routes"; // Admin-Side
+import UserRoutes from "./CompanyUser/userAuth.routes"; // Company-user side
 
 let router = express.Router();
 
-router.use("/admin", AdminRoutes);
-router.use("/auth", UserRoutes);
+// Main Routes
+router.use("/admin", AdminRoutes); // adminside related routes
+router.use("/auth", UserRoutes);  // user related routes
 
 export { router as apiRouter };

@@ -7,6 +7,7 @@ import * as userRespository from "../../repository/user.Repository";
 import * as companyRepository from "../../repository/company.Repository";
 import mongoose from "mongoose";
 
+// for adding companyUser 
 export const AddCompanyUser = async (
   req: Request,
   res: Response,
@@ -20,7 +21,7 @@ export const AddCompanyUser = async (
       return GlobleResponse.error({
         res,
         status: httpStatus.BAD_REQUEST,
-        msg: ERROR_MSGS.INVALID_CREDETIALS,
+        msg: ERROR_MSGS.INVALID_CREDENTIALS,
       });
     }
     if(!mongoose.Types.ObjectId.isValid(companyId)){

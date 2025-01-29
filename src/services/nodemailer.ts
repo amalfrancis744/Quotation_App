@@ -38,13 +38,13 @@ export const sendEmail = async (msg: any) => {
       <p style="text-align: center;">
         <a href="${link}" style="display: inline-block; background-color: rgb(17, 70, 132); color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">Reset Password</a>
       </p>
-      <p style="font-size: 16px; color: #333;">This link will expire in 2 hours.</p>
+      <p style="font-size: 16px; color: #333;">This link will expire in 10 minitues.</p>
       <p style="font-size: 16px; color: #333;">If you did not request this, please ignore this email.</p>
-      <p style="font-size: 16px; color: #333;">This is an auto-generated email, for help email us at <a href="mailto:support@subtraid.com" style="color: rgb(17, 70, 132); text-decoration: none;">support@subtraid.com</a></p>
+      <p style="font-size: 16px; color: #333;">This is an auto-generated email, for help email us at <a href="mailto:support@gmail.com" style="color: rgb(17, 70, 132); text-decoration: none;">support@subtraid.com</a></p>
       <p style="font-size: 16px; color: #333;">Thank you,</p>
-      <p style="font-size: 16px; color: #333;">The Subtraid Support Team</p>
+      <p style="font-size: 16px; color: #333;">Support Team</p>
       <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #777;">
-        <p>© 2024 Subtraid. All rights reserved.</p>
+        <p>© 2024 All rights reserved.</p>
       </div>
     </div>`
     }
