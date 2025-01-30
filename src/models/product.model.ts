@@ -5,7 +5,11 @@ const productSchema: Schema<IProduct> = new mongoose.Schema<IProduct>(
   {
     name: { type: String, required: true }, // Product name
     category: { type: String, required: true }, // Product category
-    productUrl: { type: String },
+    productImage: {
+      key: { type: String, required: true }, // S3 object key
+      imageUrl: { type: String, required: true }, // S3 URL
+      originalname: { type: String }, // Original filename
+    },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",

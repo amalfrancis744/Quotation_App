@@ -15,5 +15,5 @@ export interface IProduct {
     excubleGST?: number;
     createdAt?: Date;
     updatedAt?: Date;
-    productUrl?: string;
+    productImage: object
   }

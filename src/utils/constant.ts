@@ -58,6 +58,10 @@ export const STATUS_CODE = {
     INVALID_CREDENTIALS:"Credentials are missing",
     INVALID_PASSWORD: 'Invalid password',
     NO_TOKEN: 'No authentication token provided.',
+    INVALID_FILE_TYPE:"Invalid file type",
+    FILE_TOO_LARGE:"File type to large",
+    IMAGE_REQUIRED:'Product image is required',
+    MISSING_FEILDS:'Please provide all required fields'
    
 
   } as const
