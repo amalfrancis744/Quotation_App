@@ -7,16 +7,23 @@ import * as userRepository from "../../repository/user.Repository";
 // get user profile detailes
 
 export const getUserProfile = async (
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { userId } = req.query;
+    const {userId} = req.user;
+    if (!userId) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,   
+        msg: "Unauthorized access",
+      });
+    }
 
     // Validate userId
     if (!userId) {
-      return GlobleResponse.error({ 
+      return GlobleResponse.error({
         res,
         status: httpStatus.BAD_REQUEST,
         msg: ERROR_MSGS.INVALID_CREDENTIALS,

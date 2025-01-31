@@ -27,7 +27,22 @@ export const updateById = async (id: string, data: any) => {
 // Find a user document by their MongoDB ObjectId
 export const findUserById = async (id: string) => {
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).select('-password').populate({
+      path: 'company',
+      select: `companyName
+      alias
+      mobileNo
+      state
+      email
+      addresses
+      accountDetails
+      website
+      isDeleted
+      deletedAt
+      createdAt
+      updatedAt`,
+      model: 'Company'
+    });;
     return user;
   } catch (error) {
     console.error("Error in findByIdAndUpdate:", error);

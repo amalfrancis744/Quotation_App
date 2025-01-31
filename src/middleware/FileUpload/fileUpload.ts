@@ -44,7 +44,6 @@ export const uploadS3 = multer({
     },
   }),
 });
-
 // Error handler middleware
 export const handleUploadError = (
   error: any,

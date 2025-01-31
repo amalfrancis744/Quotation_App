@@ -13,18 +13,18 @@ export const AddCompanyUser = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { firstName, lastName, email, password, companyId } = req.body;
+    const { firstName, lastName, email, password, company } = req.body;
 
 
     // Check for missing credentials
-    if (!firstName || !lastName || !email || !password || !companyId) {
+    if (!firstName || !lastName || !email || !password || !company) {
       return GlobleResponse.error({
         res,
         status: httpStatus.BAD_REQUEST,
         msg: ERROR_MSGS.INVALID_CREDENTIALS,
       });
     }
-    if(!mongoose.Types.ObjectId.isValid(companyId)){
+    if(!mongoose.Types.ObjectId.isValid(company)){
 
         return GlobleResponse.error({
             res,
@@ -45,7 +45,7 @@ export const AddCompanyUser = async (
 
 
     // check companyID is Valid
-   const existingCompany = await  companyRepository.findCompanyById(companyId)
+   const existingCompany = await  companyRepository.findCompanyById(company)
     if(!existingCompany){
         return GlobleResponse.error({
             res,
@@ -57,7 +57,7 @@ export const AddCompanyUser = async (
   
     // Check if the companyId is already associated with another user
     const existingCompanyUser = await userRespository.findUserByCompanyId(
-      companyId
+      company
     );
     
     if (existingCompanyUser) {
@@ -78,7 +78,7 @@ export const AddCompanyUser = async (
       lastName,
       email,
       password: hashedPassword,
-      companyId,
+      company,
     });
 
     return GlobleResponse.success({

@@ -88,7 +88,7 @@ export const createCompany = async (
     return GlobleResponse.success({
       res,
       status: httpStatus.CREATED,
-      msg: ERROR_MSGS.COMPANY_CREATED_SUCCESSFULLY,
+      msg: INFO_MSGS.COMPANY_CREATED_SUCCESSFULLY,
     });
   } catch (error) {
     console.error("Error creating company:", error);

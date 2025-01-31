@@ -30,7 +30,6 @@ export const STATUS_CODE = {
     COMPANY_ALREADY_EXISTS:'CompanyName already exists',
     WENT_WRONG: 'Something went wrong. Please try again later.',
     EMAIL_ALREADY_EXISTS:"Company with email, already exists",
-    COMPANY_CREATED_SUCCESSFULLY:"company created successfully",
     COMPANY_ID_REQUIRED:"CompanyId is required",
     
     INVALID_VERIFICATION_TOKEN:
@@ -78,13 +77,14 @@ export const STATUS_CODE = {
     SUCCESSFUL_LOGIN: 'Successfully logged in.',
     PASSWORD_CHANGED: 'Your password has been changed successfully.',
     RESET_EMAIL: 'Reset password email sent successfully.',
-
+    COMPANY_CREATED_SUCCESSFULLY:"Company created successfully",
     COMPANY_FETCHED:"Company fethed successfullt",
     COMPANY_UPDATED_SUCCESSFULLY:"Company data updated successfully",
 
     EMAIL_VERIFIED: 'User Email verification successfully completed',
     TOKEN_VALID:'Token validation is completed successfully',
-    USER_DATA_FETCHED:"User data fetched successfully"
+    USER_DATA_FETCHED:"User data fetched successfully",
+    COMPANY_PRODUCT_FETCHED :"Products retrieved successfully"
   } as const
   
 

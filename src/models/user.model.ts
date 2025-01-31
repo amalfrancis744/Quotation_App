@@ -20,7 +20,7 @@ const UserSchema:Schema<IUser> = new mongoose.Schema<IUser>(
       type: String,
       required: true,
     },
-    companyId: {
+    company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
       required: true,

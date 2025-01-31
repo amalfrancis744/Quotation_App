@@ -1,11 +1,9 @@
 import { z } from "zod";
-import { commonValidators } from "../../middleware/Validation/validation";
 
 export const productSchema = z.object({
   body: z.object({
     name: z.string().min(1, "Product name is required"),
     category: z.string().min(1, "Category is required"),
-    company: commonValidators.id("Invalid compnayId"),
     sukCode: z.string().min(1, "SKU code is required"),
     hsn: z.string().min(1, "HSN code is required"),
     description: z.string().min(1, "Description is required"),

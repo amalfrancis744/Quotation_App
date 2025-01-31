@@ -27,7 +27,7 @@ export class S3Service {
         Key: key,
       });
 
-      return await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
+      return await getSignedUrl(this.s3Client, command, { expiresIn: 600000});
     } catch (error) {
       console.error("Error generating signed URL:", error);
       throw error;

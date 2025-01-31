@@ -52,6 +52,8 @@ export const authUserMiddleware = async (
     req.user = {
       userId: user._id.toString(),
       email: user.email,
+      companyId:user.company,
+      isActive:user.isActive
     };
     next();
   } catch (error) {
