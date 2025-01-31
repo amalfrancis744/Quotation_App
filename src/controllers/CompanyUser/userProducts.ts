@@ -17,9 +17,6 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
     // }
 
     const file = await  req.file as Express.MulterS3.File;
-    console.log(file)
-    console.log("body data",req.body)
-
     const {
       name,
       category,
@@ -72,7 +69,10 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
         : undefined,
     };
     // Check if product with same sukCode already exists
+    console.log(sukCode)
     const existingProduct = await userProductRepository.findOneByFeild({ sukCode });
+
+    console.log(existingProduct)
     if (existingProduct) {
       GlobleResponse.error({
         res,

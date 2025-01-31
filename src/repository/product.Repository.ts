@@ -4,7 +4,7 @@ import Product from "../models/product.model";
 
 export const findOneByFeild = async (data:any) => {
   try {
-  const product = await Product.findOne({data})
+  const product = await Product.findOne(data)
   return product
   } catch (error) {
     throw error;

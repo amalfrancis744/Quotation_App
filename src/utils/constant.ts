@@ -61,9 +61,13 @@ export const STATUS_CODE = {
     INVALID_FILE_TYPE:"Invalid file type",
     FILE_TOO_LARGE:"File type to large",
     IMAGE_REQUIRED:'Product image is required',
-    MISSING_FEILDS:'Please provide all required fields'
-   
-
+    MISSING_FEILDS:'Please provide all required fields',
+    VALIDATION_ERROR:'Validation failed',
+    INTERNAL_ERROR:'Internal server error',
+    INVALID_ID:'Invalid compnayId',
+    PASSWORD_MIN_LENGTH:'Password minimum need 6 charater',
+    INVALID_PHONE:'Invalid phone number'
+     
   } as const
   
   export const INFO_MSGS = {
