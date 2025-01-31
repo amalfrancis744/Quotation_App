@@ -44,7 +44,7 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
     const file = req.file as Express.MulterS3.File;
     const s3Service = new S3Service();
     const signedUrl = await s3Service.getSignedUrl(file.key);
-    console.log("signedUrl===>",signedUrl)
+    console.log("signedUrl===>", signedUrl);
 
     const {
       name,
@@ -137,7 +137,7 @@ export const getCompanyProducts = async (
 ): Promise<void> => {
   try {
     const { userId, companyId } = req.user;
-    console.log(req.user)
+    console.log(req.user);
     if (!userId || !companyId) {
       return GlobleResponse.error({
         res,
@@ -167,7 +167,7 @@ export const getCompanyProducts = async (
     // Calculate skip value for pagination
     const skip = (page - 1) * limit;
 
-    const products:any = await userProductRepository.findAll(
+    const products: any = await userProductRepository.findAll(
       { company: companyId },
       {
         skip,
@@ -175,10 +175,8 @@ export const getCompanyProducts = async (
         sort: { [sortBy]: order },
       }
     );
-  
-   
-    const [updateProducts]= await processProductUrl([products]);
-   
+
+    const [ProductsList] = await processProductUrl([products]);
 
     // total count pf products for pagination
 
@@ -191,7 +189,7 @@ export const getCompanyProducts = async (
       status: httpStatus.OK,
       msg: INFO_MSGS.COMPANY_PRODUCT_FETCHED,
       data: {
-        products,
+        ProductsList,
         pagination: {
           currentPage: page,
           totalPages: Math.ceil(totalProducts / limit),
@@ -208,3 +206,76 @@ export const getCompanyProducts = async (
     });
   }
 };
+
+// Retrieve a specific product
+
+// export const getProduct = async (
+//   req: any,
+//   res: Response
+// ): Promise<void> => {
+//   try {
+//     // Check authentication
+//     const { userId, companyId } = req.user;
+//     if (!userId || !companyId) {
+//       GlobleResponse.error({
+//         res,
+//         status: httpStatus.UNAUTHORIZED,
+//         msg: ERROR_MSGS.UNAUTHORIZED_ACCESS,
+//       });
+//       return;
+//     }
+
+//     // Verify company exists
+//     const companyData = await companyRepository.findCompanyById(companyId);
+//     if (!companyData) {
+//       GlobleResponse.error({
+//         res,
+//         status: httpStatus.NOT_FOUND,
+//         msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
+//       });
+//       return;
+//     }
+
+//     // Get product ID from route parameters
+//     const productId = req.params.productId;
+//     if (!productId) {
+//       GlobleResponse.error({
+//         res,
+//         status: httpStatus.BAD_REQUEST,
+//         msg: ERROR_MSGS.INVALID_PRODUCT_ID,
+//       });
+//       return;
+//     }
+
+//     // Find product with company validation
+//     const product = await userProductRepository.findOneByFeild({
+//       _id: productId,
+//       company: companyId,
+//     });
+
+//     if (!product) {
+//       GlobleResponse.error({
+//         res,
+//         status: httpStatus.NOT_FOUND,
+//         msg: ERROR_MSGS.PRODUCT_NOT_FOUND,
+//       });
+//       return;
+//     }
+
+//     // Process product image URL
+//     const [processedProduct] = await processProductUrl([product]);
+
+//     GlobleResponse.success({
+//       res,
+//       status: httpStatus.OK,
+//       msg: INFO_MSGS.PRODUCT_FETCHED,
+//       data: processedProduct,
+//     });
+//   } catch (error) {
+//     return GlobleResponse.error({
+//       res,
+//       status: httpStatus.INTERNAL_SERVER_ERROR,
+//       msg: error instanceof Error ? error.message : String(error),
+//     });
+//   }
+// };

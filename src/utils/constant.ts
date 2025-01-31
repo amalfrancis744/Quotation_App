@@ -31,6 +31,8 @@ export const STATUS_CODE = {
     WENT_WRONG: 'Something went wrong. Please try again later.',
     EMAIL_ALREADY_EXISTS:"Company with email, already exists",
     COMPANY_ID_REQUIRED:"CompanyId is required",
+    INVALID_PRODUCT_ID:"Invalid productId",
+    PRODUCT_NOT_FOUND:"Product not found",
     
     INVALID_VERIFICATION_TOKEN:
       'The provided verification token is invalid or Expired. Please verify and try again.',

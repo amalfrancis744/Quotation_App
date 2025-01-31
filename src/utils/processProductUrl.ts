@@ -17,7 +17,7 @@ const isUrlExpired = (urlString: string): boolean => {
       "$1-$2-$3T$4:$5:$6Z"
     );
 
-    // Calculate expiration timestamp
+    // determining  expiration timestamp
     const creationTimestamp = Math.floor(Date.parse(creationDate) / 1000);
     const expirationTimestamp = creationTimestamp + parseInt(expiresIn, 10);
     const currentTimestamp = Math.floor(Date.now() / 1000);
