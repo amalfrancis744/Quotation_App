@@ -11,8 +11,8 @@ import { processProductUrl } from "../../utils/processProductUrl";
 export const createProduct = async (req: any, res: Response): Promise<void> => {
   try {
     // Check user authentication and company ID
-    const { userId, companyId } = req.user;
-    if (!userId || !companyId) {
+    const { userId, company } = req.user;
+    if (!userId || !company) {
       GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
@@ -22,7 +22,7 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
     }
 
     // Verify if company exists
-    const companyData = await companyRepository.findCompanyById(companyId);
+    const companyData = await companyRepository.findCompanyById(company);
     if (!companyData) {
       GlobleResponse.error({
         res,
@@ -79,7 +79,7 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
     const productData: Partial<IProduct> = {
       name,
       category,
-      company: companyId,
+      company: company,
       sukCode,
       hsn,
       description,
@@ -135,9 +135,8 @@ export const getCompanyProducts = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { userId, companyId } = req.user;
-    console.log(req.user);
-    if (!userId || !companyId) {
+    const { userId, company } = req.user;
+    if (!userId || !company) {
       return GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
@@ -146,7 +145,8 @@ export const getCompanyProducts = async (
     }
 
     // checking comapnyId is valid
-    const comapnyData = await companyRepository.findCompanyById(companyId);
+    const comapnyData = await companyRepository.findCompanyById(company);
+
     if (!comapnyData) {
       return GlobleResponse.error({
         res,
@@ -159,29 +159,26 @@ export const getCompanyProducts = async (
     const limit = parseInt(req.query.limit as string) || 10;
     const sortBy = (req.query.sortBy as string) || "createdAt";
     const order = (req.query.order as string)?.toLowerCase() === "asc" ? 1 : -1;
-    const includeDeleted = req.query.includeDeleted === 'true';
+    const includeDeleted = req.query.includeDeleted === "true";
     // Calculate skip value for pagination
     const skip = (page - 1) * limit;
 
     // Add isDeleted filter
     const filter = {
-      company: companyId,
+      company: company,
       ...(includeDeleted ? {} : { isDeleted: false }),
     };
 
-    const products: any = await userProductRepository.findAll(
-      filter,
-      {
-        skip,
-        limit,
-        sort: { [sortBy]: order },
-      }
-    );
+    const products: any = await userProductRepository.findAll(filter, {
+      skip,
+      limit,
+      sort: { [sortBy]: order },
+    });
     const [ProductsList] = await processProductUrl([products]);
 
     // total count pf products for pagination
     const totalProducts = await userProductRepository.CountAllProducts({
-      company: companyId,
+      company: company,
     });
 
     GlobleResponse.success({
@@ -211,9 +208,9 @@ export const getCompanyProducts = async (
 export const getProduct = async (req: any, res: Response): Promise<void> => {
   try {
     // Check authentication
-    const { userId, companyId } = req.user;
+    const { userId, company } = req.user;
     // console.log("productId",req.params)
-    if (!userId || !companyId) {
+    if (!userId || !company) {
       GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
@@ -223,7 +220,7 @@ export const getProduct = async (req: any, res: Response): Promise<void> => {
     }
 
     // Verify company exists
-    const companyData = await companyRepository.findCompanyById(companyId);
+    const companyData = await companyRepository.findCompanyById(company);
     if (!companyData) {
       GlobleResponse.error({
         res,
@@ -234,7 +231,7 @@ export const getProduct = async (req: any, res: Response): Promise<void> => {
     }
 
     // Get product ID from route parameters
-    const productId = req.params.id;
+    const productId = req.params.product_id;
     if (!productId) {
       GlobleResponse.error({
         res,
@@ -247,7 +244,7 @@ export const getProduct = async (req: any, res: Response): Promise<void> => {
     // Find product with company validation
     const product = await userProductRepository.findOneByFeild({
       _id: productId,
-      company: companyId,
+      company: company,
       isDeleted: false,
     });
     if (!product) {
@@ -281,8 +278,8 @@ export const updateProduct = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { userId, companyId } = req.user;
-    if (!userId || !companyId) {
+    const { userId, company } = req.user;
+    if (!userId || !company) {
       GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
@@ -292,7 +289,7 @@ export const updateProduct = async (
     }
 
     // Verify company exists
-    const companyData = await companyRepository.findCompanyById(companyId);
+    const companyData = await companyRepository.findCompanyById(company);
     if (!companyData) {
       GlobleResponse.error({
         res,
@@ -302,7 +299,7 @@ export const updateProduct = async (
       return;
     }
     // Get product ID from route parameters
-    const productId = req.params.id;
+    const productId = req.params.product_id;
     if (!productId) {
       GlobleResponse.error({
         res,
@@ -315,7 +312,7 @@ export const updateProduct = async (
     // Find product with company validation
     const product = await userProductRepository.findOneByFeild({
       _id: productId,
-      company: companyId,
+      company: company,
       isDeleted: false,
     });
     if (!product) {
@@ -340,8 +337,8 @@ export const updateProduct = async (
       excubleGST,
     } = req.body;
 
-     // If updating sukCode, check for duplicates
-     if (sukCode && sukCode !== product.sukCode) {
+    // If updating sukCode, check for duplicates
+    if (sukCode && sukCode !== product.sukCode) {
       const existingProduct = await userProductRepository.findOneByFeild({
         sukCode,
         isDeleted: false,
@@ -359,12 +356,13 @@ export const updateProduct = async (
     }
 
     if (name && name !== product.name) {
-      const existingProductWithName = await userProductRepository.findOneByFeild({
-        name,
-        isDeleted: false,
-        _id: { $ne: productId }, // Exclude current product
-      });
-    
+      const existingProductWithName =
+        await userProductRepository.findOneByFeild({
+          name,
+          isDeleted: false,
+          _id: { $ne: productId }, // Exclude current product
+        });
+
       if (existingProductWithName) {
         GlobleResponse.error({
           res,
@@ -416,6 +414,75 @@ export const updateProduct = async (
       status: httpStatus.OK,
       msg: INFO_MSGS.PRODUCT_UPDATED_SUCCESSFULLY,
       data: updatedProduct,
+    });
+  } catch (error) {
+    return GlobleResponse.error({
+      res,
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      msg: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+export const deleteProduct = async (req: any, res: Response): Promise<void> => {
+  try {
+    const { userId, company } = req.user;
+    if (!userId || !company) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: "Unauthorized access",
+      });
+    }
+
+    // Verify company exists
+    const companyData = await companyRepository.findCompanyById(company);
+    if (!companyData) {
+      GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
+      });
+      return;
+    }
+    // Get product ID from route parameters
+    const productId = req.params.product_id;
+    if (!productId) {
+      GlobleResponse.error({
+        res,
+        status: httpStatus.BAD_REQUEST,
+        msg: ERROR_MSGS.INVALID_PRODUCT_ID,
+      });
+      return;
+    }
+
+    // Find product with company validation
+    const product = await userProductRepository.findOneByFeild({
+      _id: productId,
+      company: company,
+      isDeleted: false,
+    });
+    if (!product) {
+      GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.PRODUCT_NOT_FOUND,
+      });
+      return;
+    }
+
+    // Mark product as deleted
+    const softDeletedProduct = await userProductRepository.UpdateById(productId, {
+      isDeleted: true,
+      deletedAt: new Date(),
+      deletedBy: userId,
+    });
+
+    GlobleResponse.success({
+      res,
+      status: httpStatus.OK,
+      msg: INFO_MSGS.PRODUCT_DELETED_SUCCESSFULLY,
+      data: { productId: softDeletedProduct._id },
     });
   } catch (error) {
     return GlobleResponse.error({

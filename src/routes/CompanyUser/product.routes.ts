@@ -9,7 +9,8 @@ const router = express.Router();
 
 router.post("/create", uploadS3.single('productImage'),validateRequest(productSchema), UserProductController.createProduct);
 router.get("/company-products",UserProductController.getCompanyProducts)
-router.get('/:id',UserProductController.getProduct)
-router.put("/:id",uploadS3.single("productImage"),validateRequest(updateProductSchema),UserProductController.updateProduct)
+router.get('/:product_id',UserProductController.getProduct)
+router.put("/:product_id",uploadS3.single("productImage"),validateRequest(updateProductSchema),UserProductController.updateProduct)
+router.delete("/:product_id",UserProductController.deleteProduct)
 
 export default router

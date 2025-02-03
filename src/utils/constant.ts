@@ -34,6 +34,7 @@ export const STATUS_CODE = {
     INVALID_PRODUCT_ID:"Invalid productId",
     PRODUCT_NOT_FOUND:"Product not found",
     PRODUCT_ALREADY_EXISTS:"Product with this SKU code already exists",
+
     
     INVALID_VERIFICATION_TOKEN:
       'The provided verification token is invalid or Expired. Please verify and try again.',
@@ -43,6 +44,7 @@ export const STATUS_CODE = {
     ACCOUNT_NOT_FOUND: 'Account not found, invalid email.',
     INVALID_LOGIN: 'Invalid email or password.',
     USER_NOT_FOUND: 'User not found.',
+    AUTH_FAILED : "Unauthorized access",
 
     COMAPNY_NOT_FOUND:"Invalid company or invalid company data",
     INVALID_TOKEN: 'Invalid token',
@@ -68,7 +70,11 @@ export const STATUS_CODE = {
     INTERNAL_ERROR:'Internal server error',
     INVALID_ID:'Invalid compnayId',
     PASSWORD_MIN_LENGTH:'Password minimum need 6 charater',
-    INVALID_PHONE:'Invalid phone number'
+    INVALID_PHONE:'Invalid phone number',
+    
+    CUSTOMER_ALREADY_EXISTS : "Customer already exists the given detailes",
+    NO_CUSTOMERS_FOUND:"No customers are connected with this company",
+    CUSTOMER_NOT_FOUND:"Customer data not found"
      
   } as const
   
@@ -91,7 +97,12 @@ export const STATUS_CODE = {
     PRODUCT_FETCHED:'Product fetched successfully',
     PRODUCT_CREATED_SUCCESSFULLY:'Product created successfully',
     PRODUCT_UPDATED_SUCCESSFULLY:'Product data updated successfully',
+    PRODUCT_DELETED_SUCCESSFULLY:'Product deleted successfully',
 
+    CUSTOMER_CREATED: "Customer created successfully",
+    CUSTOMER_RETRIEVED:"Customer fetched successfully",
+    CUSTOMERS_LISTED: "Company customers list fetched successfully",
+    CUSTOMER_UPDATED:"Customer updation compeleted successfully"
   } as const
   
 

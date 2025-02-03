@@ -6,12 +6,11 @@ import { TokenPayload } from "../../interfaces/auth.interfaces";
 import { GlobleResponse } from "../../utils/response";
 import { ERROR_MSGS } from "../../utils/constant";
 
-
 export const authUserMiddleware = async (
   req: any,
   res: Response,
   next: NextFunction
-)=> {
+) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -50,10 +49,10 @@ export const authUserMiddleware = async (
     }
 
     req.user = {
-      userId: user._id.toString(),
+      userId: user._id,
       email: user.email,
-      companyId:user.company,
-      isActive:user.isActive
+      company: user.company,
+      isActive: user.isActive,
     };
     next();
   } catch (error) {

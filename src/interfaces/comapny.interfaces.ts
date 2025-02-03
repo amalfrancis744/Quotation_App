@@ -13,6 +13,7 @@ interface IAccountDetails {
   isActive: boolean;
 }
 export interface ICompany extends Document {
+  id?: string;
   companyName: string;
   alias: string;
   mobileNo:string;

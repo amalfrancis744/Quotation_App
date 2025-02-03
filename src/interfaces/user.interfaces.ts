@@ -2,7 +2,7 @@ export interface IUser {
     id: string;
     email: string;
     password: string;
-    company?:string
+    company?: string;
     firstName: string;
     lastName: string;
     createdAt: Date;
