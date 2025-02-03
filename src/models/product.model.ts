@@ -23,6 +23,9 @@ const productSchema: Schema<IProduct> = new mongoose.Schema<IProduct>(
     mrp: { type: Number, required: true }, // Maximum Retail Price
     saleRate: { type: Number },
     excubleGST: { type: Number }, // Excuble GST percentage,
+    isDeleted: { type: Boolean, default: false },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );

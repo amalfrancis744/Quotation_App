@@ -33,6 +33,7 @@ export const STATUS_CODE = {
     COMPANY_ID_REQUIRED:"CompanyId is required",
     INVALID_PRODUCT_ID:"Invalid productId",
     PRODUCT_NOT_FOUND:"Product not found",
+    PRODUCT_ALREADY_EXISTS:"Product with this SKU code already exists",
     
     INVALID_VERIFICATION_TOKEN:
       'The provided verification token is invalid or Expired. Please verify and try again.',
@@ -86,7 +87,11 @@ export const STATUS_CODE = {
     EMAIL_VERIFIED: 'User Email verification successfully completed',
     TOKEN_VALID:'Token validation is completed successfully',
     USER_DATA_FETCHED:"User data fetched successfully",
-    COMPANY_PRODUCT_FETCHED :"Products retrieved successfully"
+    COMPANY_PRODUCT_FETCHED :"Products retrieved successfully",
+    PRODUCT_FETCHED:'Product fetched successfully',
+    PRODUCT_CREATED_SUCCESSFULLY:'Product created successfully',
+    PRODUCT_UPDATED_SUCCESSFULLY:'Product data updated successfully',
+
   } as const
   
 

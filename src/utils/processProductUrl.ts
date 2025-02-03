@@ -32,8 +32,8 @@ const isUrlExpired = (urlString: string): boolean => {
 export const processProductUrl = async (product: any[]): Promise<any[]> => {
   const updatePromises = product.map(async (product) => {
     if (
-      product?.[0].productImage?.imageUrl &&
-      isUrlExpired(product?.[0].productImage.imageUrl)
+      (Array.isArray(product) && product?.[0]?.productImage?.imageUrl && isUrlExpired(product[0].productImage.imageUrl)) ||
+      (!Array.isArray(product) && product?.productImage?.imageUrl && isUrlExpired(product.productImage.imageUrl))
     ) {
       try {
         // Generate new signed URL
@@ -41,12 +41,10 @@ export const processProductUrl = async (product: any[]): Promise<any[]> => {
         const newUrl = await s3Service.getSignedUrl(
           product?.[0].productImage.key
         );
-
         // Update product in database
         await userProductRepository.UpdateById(product._id, {
           "productImage.imageUrl": newUrl,
         });
-
         // Update URL in current product object
         product.productImage.imageUrl = newUrl;
       } catch (error) {
