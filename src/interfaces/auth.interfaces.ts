@@ -6,3 +6,7 @@ export interface TokenPayload {
     exp:number;
     
 }
+
+export interface adminTokenPayload {
+    adminId: string
+}

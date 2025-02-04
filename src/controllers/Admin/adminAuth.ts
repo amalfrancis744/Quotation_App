@@ -1,10 +1,12 @@
 import bcrypt from "bcrypt";
-import { Response, Request, NextFunction } from "express";
+import { Response, Request } from "express";
 import { GlobleResponse } from "../../utils/response";
 import httpStatus from "http-status";
 import { ERROR_MSGS, INFO_MSGS } from "../../utils/constant";
 import * as adminRepository from "../../repository/admin.Repository";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv'
+dotenv.config()
 
 // for admin creation routes
 export const registerAdmin = async (
@@ -19,7 +21,7 @@ export const registerAdmin = async (
       return GlobleResponse.error({
         res,
         status: httpStatus.CONFLICT, // Use 409 Conflict status
-        msg: ERROR_MSGS.EMAIL_EXISTS,
+        msg: ERROR_MSGS.USERNAME_EXITS,
       });
     }
 
@@ -76,9 +78,11 @@ export const loginAdmin = async (
       });
     }
 
+    const SCERET_KEY = process.env.ADMIN_JWT_SECRET || "mysceretkey";
+
     // Generate token
-    const token = jwt.sign({ adminId: admin._id }, process.env.JWT_SECRET!, {
-      expiresIn: parseInt(process.env.JWT_EXPIRATION!, 10),
+    const token = jwt.sign({ adminId: admin._id },SCERET_KEY, {
+      expiresIn: '1h',
     });
 
     // Successful login response

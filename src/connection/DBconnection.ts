@@ -4,8 +4,10 @@ import dotenv from 'dotenv';
 // Load environment variables from .env file
 dotenv.config();
 
+// Connect to MongoDB with local
 const dbUri: string = process.env.MONGODB_URI || 'mongodb://localhost:27017/quotationapp';
 
+// db connection
 const connectDB = async (): Promise<void> => {
   try {
     await mongoose.connect(dbUri);
@@ -16,4 +18,4 @@ const connectDB = async (): Promise<void> => {
   }
 };
 
-export default connectDB;
+export default connectDB; 

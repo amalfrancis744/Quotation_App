@@ -31,3 +31,19 @@ export const createAdmin = async ({
    error.message;
  }
 };
+
+// findAdmin by id 
+export const findAdminById = async (id: string) => {
+ 
+  try {
+    const admin = await Admin.findById(id);
+    if (!admin) {
+      throw new Error("Admin not found");
+    }
+    return admin;
+  }
+  catch(error)
+  {
+    
+  }
+}

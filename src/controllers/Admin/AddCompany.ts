@@ -5,12 +5,22 @@ import { ERROR_MSGS, INFO_MSGS } from "../../utils/constant";
 import * as companyRepository from "../../repository/company.Repository";
 import { Company } from "../../models/comapny.model";
 
+// List all companies
 export const getAllCompanies = async (
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
+    const { adminId } = req.admin;
+
+    if (!adminId) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: "Unauthorized access",
+      });
+    }
     const companies = await companyRepository.findAllCompanies();
     if (!companies) {
       return GlobleResponse.error({
@@ -27,12 +37,23 @@ export const getAllCompanies = async (
   } catch (error) {}
 };
 
+// Create a new company
 export const createCompany = async (
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
+    const { adminId } = req.admin;
+
+    if (!adminId) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: "Unauthorized access",
+      });
+    }
+
     var {
       companyName,
       alias,
@@ -44,15 +65,12 @@ export const createCompany = async (
       state,
     } = req.body;
 
-    // Add input validation logging
- 
-
     // check company already exists
     const existsCompany = await companyRepository.findCompanyNameByCompany(
       companyName
     );
-    
-    // Add null/undefined check
+
+    // if already have
     if (existsCompany) {
       return GlobleResponse.error({
         res,
@@ -71,7 +89,6 @@ export const createCompany = async (
         msg: ERROR_MSGS.EMAIL_ALREADY_EXISTS,
       });
     }
-
     const company = new Company({
       companyName,
       alias,
@@ -81,44 +98,49 @@ export const createCompany = async (
       email,
       mobileNo,
       state,
+      isDeleted: false
     });
-
     await company.save();
-
     return GlobleResponse.success({
       res,
       status: httpStatus.CREATED,
       msg: INFO_MSGS.COMPANY_CREATED_SUCCESSFULLY,
     });
   } catch (error) {
-    console.error("Error creating company:", error);
     return GlobleResponse.error({
       res,
       status: httpStatus.INTERNAL_SERVER_ERROR,
-      msg: "Error creating company",
+      msg: ERROR_MSGS.COMPANY_CREATION_FAILED,
     });
   }
 };
 
-//   get specific company
-export const getCompanyById = async (
-  req: Request,
+//get specific company
+export const getCompany = async (
+  req: any,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const companyId = req.params.company_id;
+    const { adminId } = req.admin;
 
-    if (!companyId) {
+    if (!adminId) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: "Unauthorized access",
+      });
+    }
+    const { company_id } = req.params;
+    if (!company_id) {
       return GlobleResponse.error({
         res,
         status: httpStatus.BAD_REQUEST,
         msg: ERROR_MSGS.COMPANY_ID_REQUIRED,
       });
     }
-
-    const result = await companyRepository.findCompanyById(companyId);
-
+    // check the company with company_id
+    const result = await companyRepository.findCompanyById(company_id);
     if (!result) {
       return GlobleResponse.error({
         res,
@@ -144,12 +166,22 @@ export const getCompanyById = async (
 
 // Update a specific company
 export const updateCompany = async (
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const companyId = req.params.company_id;
+    const { adminId } = req.admin;
+
+    if (!adminId) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: "Unauthorized access",
+      });
+    }
+
+    const { company_id } = req.params;
     const {
       companyName,
       alias,
@@ -162,7 +194,7 @@ export const updateCompany = async (
     } = req.body;
 
     // Validate comapny ID
-    if (!companyId) {
+    if (!company_id) {
       return GlobleResponse.error({
         res,
         status: httpStatus.BAD_REQUEST,
@@ -170,7 +202,7 @@ export const updateCompany = async (
       });
     }
     // Check if company exists
-    const existingCompany = await companyRepository.findCompanyById(companyId);
+    const existingCompany = await companyRepository.findCompanyById(company_id);
     if (!existingCompany) {
       return GlobleResponse.error({
         res,
@@ -179,14 +211,13 @@ export const updateCompany = async (
       });
     }
     //check email for uniqueneness
-
     if (email) {
-      const normalizedEmail = email.toLowerCase().trim()
-    //   console.log("amal=> " ,normalizedEmail," ",email)
-      const emailExistes:any = await companyRepository.findEmailByEmailCompanyId(
-        normalizedEmail,
-        companyId
-      );
+      const normalizedEmail = email.toLowerCase().trim();
+      const emailExistes: any =
+        await companyRepository.findEmailByEmailCompanyId(
+          normalizedEmail,
+          company_id
+        );
       if (emailExistes) {
         return GlobleResponse.error({
           res,
@@ -199,7 +230,7 @@ export const updateCompany = async (
       const companyExits =
         await companyRepository.findCompayByCompanyNameAndSame(
           companyName,
-          companyId
+          company_id
         );
       if (companyExits) {
         return GlobleResponse.error({
@@ -215,10 +246,12 @@ export const updateCompany = async (
       email: email?.toLowerCase(),
     };
 
+    // updating compay detailes
     const updatedData = await companyRepository.findByIdAndUpdate(
-      companyId,
+      company_id,
       updateData
     );
+
     if (!updatedData) {
       return GlobleResponse.error({
         res,
@@ -242,62 +275,70 @@ export const updateCompany = async (
   }
 };
 
+// Delete a specific company
+export const deleteCompany = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const {adminId} = req.admin
 
-export const deleteCompany = async (req:Request,res:Response,next:NextFunction):Promise<void>=>{
-
-    try{
-
-        const {company_id} = req.params
-
-        // Validate comapny ID
-    if (!company_id) {
-        return GlobleResponse.error({
-          res,
-          status: httpStatus.BAD_REQUEST,
-          msg: ERROR_MSGS.COMPANY_ID_REQUIRED,
-        });
-      }
-      // Check if company exists
-      const existingCompany = await companyRepository.findCompanyById(company_id);
-      if (!existingCompany) {
-        return GlobleResponse.error({
-          res,
-          status: httpStatus.NOT_FOUND,
-          msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
-        });
-      }
-       const deleteCompany = await companyRepository.findByIdAndUpdate(company_id,{
-        isDeleted: true,
-        deletedAt:new Date()
-       })
-
-       if(!deleteCompany)
-       {
-        return GlobleResponse.error({
-            res,
-            status:httpStatus.BAD_REQUEST,
-            msg:ERROR_MSGS.DELETE_FAILED
-        })
-       }
-
-       return GlobleResponse.success({
-        res,
-        status:httpStatus.OK,
-        msg:ERROR_MSGS.COMPANY_DELETED
-       })
-
-
-    }
-    catch(error)
+    if(!adminId)
     {
-        console.error("Error updating company:", error);
+      return GlobleResponse.error({
+        res,
+        status:httpStatus.UNAUTHORIZED,
+        msg: "Unauthorized access",
+      })
+    }
+    const { company_id } = req.params;
+
+    // Validate comapny ID
+    if (!company_id) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.BAD_REQUEST,
+        msg: ERROR_MSGS.COMPANY_ID_REQUIRED,
+      });
+    }
+    // Check if company exists
+    const existingCompany = await companyRepository.findCompanyById(company_id);
+    if (!existingCompany) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
+      });
+    }
+    // delete the comapny (making isDeleted true)
+    const deleteCompany = await companyRepository.findByIdAndUpdate(
+      company_id,
+      {
+        isDeleted: true,
+        deletedAt: new Date(),
+      }
+    );
+
+    if (!deleteCompany) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.BAD_REQUEST,
+        msg: ERROR_MSGS.DELETE_FAILED,
+      });
+    }
+
+    return GlobleResponse.success({
+      res,
+      status: httpStatus.OK,
+      msg: ERROR_MSGS.COMPANY_DELETED,
+    });
+  } catch (error) {
+    console.error("Error updating company:", error);
     return GlobleResponse.error({
       res,
       status: httpStatus.INTERNAL_SERVER_ERROR,
       msg: "Error updating company",
     });
-        
-
-    }
-}
-
+  }
+};

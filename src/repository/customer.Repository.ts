@@ -32,7 +32,7 @@ export const findCustomerByIdandCompany = async (customerId: string, options: { 
       const { company } = options;
   
       // Find customer by customerId and company
-      const customer = await Customer.findOne({ _id: customerId, company }).populate({
+      const customer = await Customer.findOne({ _id: customerId, company, isDeleted: false }).populate({
         path: "company",
         select: `companyName
               alias
@@ -98,7 +98,7 @@ export const FindCustomerByAll = async (name: any, email: any, company: any, mob
 
 export const getCustomersByCompany = async (companyId: string) => {
     try {
-        const customers = await Customer.find({ company: companyId }).populate({
+        const customers = await Customer.find({ company: companyId, isDeleted: false }).populate({
             path: 'company',
             select: `companyName
             alias
@@ -122,31 +122,36 @@ export const getCustomersByCompany = async (companyId: string) => {
 };
 
 export const findCustomerById = async (customerId: string) => {
-    try {
-        const customer = await Customer.findById(customerId).populate({
-            path: "company",
-            select: `companyName
-                  alias
-                  mobileNo
-                  state
-                  email
-                  addresses
-                  accountDetails
-                  website
-                  isDeleted
-                  deletedAt
-                  createdAt
-                  updatedAt`,
-            model: "Company",
-          });
-        if (!customer) {
-            throw new Error("Customer not found");
-        }
-        return customer; // Return the customer object
-    } catch (error) {
-        console.error("Error in findCustomerById", error);
-        throw error;
-    }
+  try {
+      const customer = await Customer.findOne({ 
+          _id: customerId, 
+          isDeleted: false 
+      }).populate({
+          path: "company",
+          select: `companyName
+                alias
+                mobileNo
+                state
+                email
+                addresses
+                accountDetails
+                website
+                isDeleted
+                deletedAt
+                createdAt
+                updatedAt`,
+          model: "Company",
+      });
+
+      if (!customer) {
+          throw new Error("Customer not found or has been deleted");
+      }
+
+      return customer;
+  } catch (error) {
+      console.error("Error in findCustomerById", error);
+      throw error;
+  }
 };
 
 

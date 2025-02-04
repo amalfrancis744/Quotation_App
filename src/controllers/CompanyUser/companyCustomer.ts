@@ -90,6 +90,7 @@ export const createCustomer = async (
       email,
       mobileNo,
       company: company,
+      isDeleted: false,
     });
 
     if (newCustomer) {
@@ -132,21 +133,20 @@ export const getAllCompanyCustomers = async (
       company
     );
 
-    // If customers exist, return success response
-    if (customers) {
-      return GlobleResponse.success({
+    //no customers found
+    if (!customers.length) {
+      return GlobleResponse.error({
         res,
-        msg: INFO_MSGS.CUSTOMERS_LISTED,
-        status: httpStatus.OK,
-        data: customers,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.NO_CUSTOMERS_FOUND,
       });
     }
 
-    // If no customers found, return an appropriate response
-    return GlobleResponse.error({
+    return GlobleResponse.success({
       res,
-      status: httpStatus.NOT_FOUND,
-      msg: ERROR_MSGS.NO_CUSTOMERS_FOUND,
+      msg: INFO_MSGS.CUSTOMERS_LISTED,
+      status: httpStatus.OK,
+      data: customers,
     });
   } catch (error) {
     // Handle unexpected errors
@@ -184,7 +184,7 @@ export const getCustomer = async (
         res,
         msg: INFO_MSGS.CUSTOMER_RETRIEVED,
         status: httpStatus.OK,
-        data:customer,
+        data: customer,
       });
     }
   } catch (error) {
@@ -197,52 +197,110 @@ export const getCustomer = async (
 };
 
 // Update a specific customer
-export const updateCustomer = async (req: any, res: Response, next: NextFunction): Promise<void> => {
-    try {
-        const { userId, company } = req.user;
+export const updateCustomer = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { userId, company } = req.user;
 
-        if (!userId || !company) {
-            return GlobleResponse.error({
-                res,
-                status: httpStatus.UNAUTHORIZED,
-                msg: ERROR_MSGS.AUTH_FAILED,
-            });
-        }
-
-        const { customer_id } = req.params;
-
-        // Check if the customer is valid
-        const customer = await companyCustomerRepository.findCustomerById(customer_id);
-
-        if (!customer) {
-            return GlobleResponse.error({
-                res,
-                status: httpStatus.NOT_FOUND,
-                msg: ERROR_MSGS.CUSTOMER_NOT_FOUND,
-            });
-        }
-
-        const { name, email, phone, address } = req.body;
-
-        // Update customer logic here
-        customer.name = name || customer.name;
-        customer.email = email || customer.email;
-        customer.mobileNo = phone || customer.mobileNo;
-  
-
-        await customer.save();
-
-        return GlobleResponse.success({
-            res,
-            status: httpStatus.OK,
-            msg: INFO_MSGS.CUSTOMER_UPDATED,
-            data: customer,
-        });
-    } catch (error) {
-        return GlobleResponse.error({
-            res,
-            status: httpStatus.INTERNAL_SERVER_ERROR,
-            msg: error instanceof Error ? error.message : String(error),
-        });
+    if (!userId || !company) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: ERROR_MSGS.AUTH_FAILED,
+      });
     }
+
+    const { customer_id } = req.params;
+
+    // Check if the customer is valid
+    const customer = await companyCustomerRepository.findCustomerById(
+      customer_id
+    );
+
+    if (!customer) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.CUSTOMER_NOT_FOUND,
+      });
+    }
+
+    const { name, email, phone } = req.body;
+
+    // Update customer detail
+    customer.name = name || customer.name;
+    customer.email = email || customer.email;
+    customer.mobileNo = phone || customer.mobileNo;
+
+    await customer.save();
+
+    return GlobleResponse.success({
+      res,
+      status: httpStatus.OK,
+      msg: INFO_MSGS.CUSTOMER_UPDATED,
+      data: customer,
+    });
+  } catch (error) {
+    return GlobleResponse.error({
+      res,
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      msg: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+// Remove an item from a quotation
+
+export const deleteCustomer = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    // console.log("req user",req.user)
+    const { userId, company } = req.user;
+    if (!userId || !company) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: ERROR_MSGS.AUTH_FAILED,
+      });
+    }
+    const { customer_id } = req.params;
+    // Check if the customer is valid
+    const customer = await companyCustomerRepository.findCustomerById(
+      customer_id
+    );
+
+    if (!customer) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.CUSTOMER_NOT_FOUND,
+      });
+    }
+
+    // Soft delete the customer
+    customer.isDeleted = true;
+    customer.deletedAt = new Date();
+    customer.deletedBy = userId;
+
+    await customer.save();
+
+    return GlobleResponse.success({
+      res,
+      status: httpStatus.OK,
+      msg: INFO_MSGS.CUSTOMER_DELETED,
+      data: { customerId: customer_id },
+    });
+  } catch (error) {
+    return GlobleResponse.error({
+      res,
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      msg: error instanceof Error ? error.message : String(error),
+    });
+  }
 };

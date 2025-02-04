@@ -3,7 +3,7 @@ import { Company } from "../models/comapny.model";
 // Retrieve all companies from the database
 export const findAllCompanies = async () => {
   try {
-    const allCompany = await Company.find();
+    const allCompany = await Company.find({isDeleted: false});
     return allCompany;
   } catch (error) {
     throw error;
@@ -17,6 +17,7 @@ export const findCompanyNameByCompany = async (companyName: string) => {
       companyName: {
         $regex: new RegExp(`^${companyName}$`, "i"),
       },
+      isDeleted: false,
     });
     return company;
   } catch (error) {
@@ -27,7 +28,7 @@ export const findCompanyNameByCompany = async (companyName: string) => {
 // Find a company by email address
 export const findEmailByCompany = async (email: string) => {
   try {
-    const company = await Company.findOne({ email });
+    const company = await Company.findOne({ email, isDeleted: false });
     return company;
   } catch (error) {
     throw error;
@@ -37,8 +38,7 @@ export const findEmailByCompany = async (email: string) => {
 // Find a company by its MongoDB ObjectId
 export const findCompanyById = async (id: string) => {
   try {
-    // No need for {_id: id}, can pass id directly to findById
-    const company = await Company.findById(id);
+    const company = await Company.findOne({ _id: id, isDeleted: false });
     return company;
   } catch (error) {
     throw error;

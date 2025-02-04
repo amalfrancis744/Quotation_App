@@ -34,6 +34,8 @@ export const STATUS_CODE = {
     INVALID_PRODUCT_ID:"Invalid productId",
     PRODUCT_NOT_FOUND:"Product not found",
     PRODUCT_ALREADY_EXISTS:"Product with this SKU code already exists",
+    COMPANY_CREATION_FAILED:"Company creation failed",
+    USERNAME_EXITS:"Username already exists",
 
     
     INVALID_VERIFICATION_TOKEN:
@@ -102,7 +104,8 @@ export const STATUS_CODE = {
     CUSTOMER_CREATED: "Customer created successfully",
     CUSTOMER_RETRIEVED:"Customer fetched successfully",
     CUSTOMERS_LISTED: "Company customers list fetched successfully",
-    CUSTOMER_UPDATED:"Customer updation compeleted successfully"
+    CUSTOMER_UPDATED:"Customer updation compeleted successfully",
+    CUSTOMER_DELETED:"Customer deleted successfully"
   } as const
   
 

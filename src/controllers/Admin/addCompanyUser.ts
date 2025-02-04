@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { Response, Request, NextFunction } from "express";
+import { Response, Request } from "express";
 import { GlobleResponse } from "../../utils/response";
 import httpStatus from "http-status";
 import { ERROR_MSGS, INFO_MSGS } from "../../utils/constant";
@@ -7,14 +7,22 @@ import * as userRespository from "../../repository/user.Repository";
 import * as companyRepository from "../../repository/company.Repository";
 import mongoose from "mongoose";
 
-// for adding companyUser 
+// for adding companyUser
 export const AddCompanyUser = async (
-  req: Request,
-  res: Response,
+  req: any,
+  res: Response
 ): Promise<void> => {
   try {
-    const { firstName, lastName, email, password, company } = req.body;
+    const { adminId } = req.admin;
 
+    if (!adminId) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: "Unauthorized access",
+      });
+    }
+    const { firstName, lastName, email, password, company } = req.body;
 
     // Check for missing credentials
     if (!firstName || !lastName || !email || !password || !company) {
@@ -24,13 +32,12 @@ export const AddCompanyUser = async (
         msg: ERROR_MSGS.INVALID_CREDENTIALS,
       });
     }
-    if(!mongoose.Types.ObjectId.isValid(company)){
-
-        return GlobleResponse.error({
-            res,
-            status: httpStatus.BAD_REQUEST,
-            msg: ERROR_MSGS.INVALID_COMPANY_ID,
-        })
+    if (!mongoose.Types.ObjectId.isValid(company)) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.BAD_REQUEST,
+        msg: ERROR_MSGS.INVALID_COMPANY_ID,
+      });
     }
 
     // Check if email already exists
@@ -43,28 +50,26 @@ export const AddCompanyUser = async (
       });
     }
 
-
     // check companyID is Valid
-   const existingCompany = await  companyRepository.findCompanyById(company)
-    if(!existingCompany){
-        return GlobleResponse.error({
-            res,
-            status: httpStatus.BAD_REQUEST,
-            msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
-        })
-
+    const existingCompany = await companyRepository.findCompanyById(company);
+    if (!existingCompany) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.BAD_REQUEST,
+        msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
+      });
     }
-  
+
     // Check if the companyId is already associated with another user
     const existingCompanyUser = await userRespository.findUserByCompanyId(
       company
     );
-    
+
     if (existingCompanyUser) {
       return GlobleResponse.error({
         res,
         status: httpStatus.BAD_REQUEST,
-        msg: ERROR_MSGS.COMPANY_ALREADY_USE
+        msg: ERROR_MSGS.COMPANY_ALREADY_USE,
       });
     }
 
