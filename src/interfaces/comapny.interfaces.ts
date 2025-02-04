@@ -16,9 +16,9 @@ export interface ICompany extends Document {
   id?: string;
   companyName: string;
   alias: string;
-  mobileNo:string;
-  state:string;
-  email:string;
+  mobileNo: string;
+  state: string;
+  email: string;
   addresses: IAddress[];
   accountDetails: IAccountDetails[];
   website: string;

@@ -10,10 +10,10 @@ let router = express.Router();
 
 // Main Routes
 router.use("/admin", AdminRoutes); // adminside related routes
-router.use("/auth", UserRoutes); // user related routes
+router.use("/auth", UserRoutes); // companyUser related routes
 
-router.use("/users", authUserMiddleware, UserProfileRoutes);
-router.use("/products", authUserMiddleware, UserProductsRoutes);
+router.use("/users", authUserMiddleware, UserProfileRoutes); // companyUser profile
+router.use("/products", authUserMiddleware, UserProductsRoutes); // companyUser managing products
+router.use("/customers", authUserMiddleware, UserCustomerRoutes); // companyUser managing customers
 
-router.use("/customers",authUserMiddleware,UserCustomerRoutes);
 export { router as apiRouter };

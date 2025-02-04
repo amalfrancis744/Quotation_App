@@ -3,7 +3,7 @@ import { Company } from "../models/comapny.model";
 // Retrieve all companies from the database
 export const findAllCompanies = async () => {
   try {
-    const allCompany = await Company.find({isDeleted: false});
+    const allCompany = await Company.find({ isDeleted: false });
     return allCompany;
   } catch (error) {
     throw error;
@@ -81,8 +81,8 @@ export const findCompayByCompanyNameAndSame = async (
 export const findByIdAndUpdate = async (id: string, data: any) => {
   try {
     const updatedCompany = await Company.findByIdAndUpdate(id, data, {
-      new: true, 
-      runValidators: true, 
+      new: true,
+      runValidators: true,
     });
     return updatedCompany;
   } catch (error) {

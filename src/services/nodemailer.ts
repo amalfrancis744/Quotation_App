@@ -3,9 +3,6 @@ import * as nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
-    // host: "smtp.ethereal.email",
-    // port: 587,
-    // secure: false,
     auth: {
       user: process.env.SMTP_EMAIL,
       pass: process.env.SMTP_KEY
@@ -28,7 +25,7 @@ export const sendEmail = async (msg: any) => {
     toEmail: string,
   ) => {
     const msg = {
-      from: 'support@subtraid.com',
+      from: 'support@gmail.com',
       subject: 'Reset password',
       to: toEmail,
       html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #dcdcdc; border-radius: 10px;">

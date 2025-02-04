@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const quotationSchema = new mongoose.Schema({
-  customer: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer' },
-  company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
+  contractor: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
+  company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
   items: [
     {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+      product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
       quantity: { type: Number, required: true },
       price: { type: Number, required: true },
     },
@@ -13,15 +13,14 @@ const quotationSchema = new mongoose.Schema({
   totalAmount: { type: Number, required: true },
 
   // Additional Fields
-  date: { type: Date, default: Date.now }, // Date of quotation creation
-  jNo: { type: String }, // J.No (Job Number)
-  party: { type: String }, // Party name
-  email: { type: String }, // Email of the party
-  contractor: { type: String }, // Contractor name
-  billQty: { type: Number }, // Bill Quantity
-  salesMan: { type: String }, // Salesman name
-  grossAmount: { type: Number }, // Gross Amount
-  netAmount: { type: Number }, // Net Amount
+  date: { type: Date, default: Date.now },
+  jNo: { type: String },
+  party: { type: String },
+  email: { type: String },
+  billQty: { type: Number },
+  salesMan: { type: String },
+  grossAmount: { type: Number },
+  netAmount: { type: Number },
   discPercentage: { type: Number }, // Discount Percentage
   overallDiscount: {
     percentage: { type: Number }, // Overall Discount Percentage
@@ -29,9 +28,9 @@ const quotationSchema = new mongoose.Schema({
   },
   quotationFormat: {
     type: String,
-    enum: ['gstWithoutRate', 'gstWithRate'], // Quotation format options
-    default: 'gstWithoutRate',
+    enum: ["gstWithoutRate", "gstWithRate"], // Quotation format options
+    default: "gstWithoutRate",
   },
 });
 
-module.exports = mongoose.model('Quotation', quotationSchema);
+module.exports = mongoose.model("Quotation", quotationSchema);

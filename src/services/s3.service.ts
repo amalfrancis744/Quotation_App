@@ -8,9 +8,6 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { s3Client } from "../config/s3.config";
 import path from "path";
 import { randomUUID } from "crypto";
-import { Upload } from "@aws-sdk/lib-storage";
-import { Readable } from "stream";
-import multerS3 from "multer-s3";
 
 export class S3Service {
   private s3Client: S3Client;
@@ -49,12 +46,6 @@ export class S3Service {
       throw error;
     }
   }
-  private bufferToStream(buffer: Buffer): Readable {
-    const stream = new Readable();
-    stream.push(buffer);
-    stream.push(null);
-    return stream;
-  }
 
   // Generate unique filename
   private generateFileName(file: any): string {
@@ -72,7 +63,7 @@ export class S3Service {
       // Generate new filename and set path
       const newFileName = this.generateFileName(file);
       const key = `products/${newFileName}`;
-      console.log("key new ",key)
+      console.log("key new ", key);
 
       // Create upload command
       const command = new PutObjectCommand({

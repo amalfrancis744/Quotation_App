@@ -36,6 +36,8 @@ export const STATUS_CODE = {
     PRODUCT_ALREADY_EXISTS:"Product with this SKU code already exists",
     COMPANY_CREATION_FAILED:"Company creation failed",
     USERNAME_EXITS:"Username already exists",
+    REGISTER_USER_FAILED:"An error occurred while registering the user.",    
+
 
     
     INVALID_VERIFICATION_TOKEN:
@@ -76,7 +78,8 @@ export const STATUS_CODE = {
     
     CUSTOMER_ALREADY_EXISTS : "Customer already exists the given detailes",
     NO_CUSTOMERS_FOUND:"No customers are connected with this company",
-    CUSTOMER_NOT_FOUND:"Customer data not found"
+    CUSTOMER_NOT_FOUND:"Customer data not found",
+    PRODUCT_NAME_EXISTS:"Product with this name already exists",
      
   } as const
   

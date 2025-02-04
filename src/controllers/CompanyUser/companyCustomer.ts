@@ -2,20 +2,16 @@ import { Request, Response, NextFunction } from "express";
 import { GlobleResponse } from "../../utils/response";
 import httpStatus from "http-status";
 import { ERROR_MSGS, INFO_MSGS } from "../../utils/constant";
-import { User } from "../../models/user.model";
 import * as companyCustomerRepository from "../../repository/customer.Repository";
 import * as companyRepository from "../../repository/company.Repository";
-import Customer from "../../models/customer.model";
-import { string } from "zod";
 
 // create new customer
 export const createCustomer = async (
   req: any,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   try {
-    const { userId, company } = req.user;
+    const { userId, company } = req.user; //checking user is valid with token-middleware req.user
 
     if (!userId || !company) {
       return GlobleResponse.error({
@@ -46,7 +42,6 @@ export const createCustomer = async (
     }
 
     //   check the customer already exist(pass name ,email,mobile)
-    // Check if the customer already exists
     const { nameExists, emailExists, mobileExists } =
       await companyCustomerRepository.FindCustomerByAll(
         name,
@@ -159,11 +154,7 @@ export const getAllCompanyCustomers = async (
 };
 
 //Retrieve a specific customer
-export const getCustomer = async (
-  req: any,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
+export const getCustomer = async (req: any, res: Response): Promise<void> => {
   try {
     const { userId, company } = req.user;
     if (!userId || !company) {
@@ -199,8 +190,7 @@ export const getCustomer = async (
 // Update a specific customer
 export const updateCustomer = async (
   req: any,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   try {
     const { userId, company } = req.user;
@@ -252,15 +242,13 @@ export const updateCustomer = async (
   }
 };
 
-// Remove an item from a quotation
 
+// Remove an item from a quotation
 export const deleteCustomer = async (
   req: any,
   res: Response,
-  next: NextFunction
 ): Promise<void> => {
   try {
-    // console.log("req user",req.user)
     const { userId, company } = req.user;
     if (!userId || !company) {
       return GlobleResponse.error({

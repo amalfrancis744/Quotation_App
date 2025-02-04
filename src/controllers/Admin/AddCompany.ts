@@ -9,18 +9,18 @@ import { Company } from "../../models/comapny.model";
 export const getAllCompanies = async (
   req: any,
   res: Response,
-  next: NextFunction
 ): Promise<void> => {
   try {
-    const { adminId } = req.admin;
+    const { adminId } = req.admin;    // checking admin valid -token-middleware
 
     if (!adminId) {
       return GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
     }
+    // get all compaines
     const companies = await companyRepository.findAllCompanies();
     if (!companies) {
       return GlobleResponse.error({
@@ -41,16 +41,15 @@ export const getAllCompanies = async (
 export const createCompany = async (
   req: any,
   res: Response,
-  next: NextFunction
 ): Promise<void> => {
   try {
-    const { adminId } = req.admin;
+    const { adminId } = req.admin;  // checking admin valid -token-middleware
 
     if (!adminId) {
       return GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
     }
 
@@ -98,7 +97,7 @@ export const createCompany = async (
       email,
       mobileNo,
       state,
-      isDeleted: false
+      isDeleted: false,
     });
     await company.save();
     return GlobleResponse.success({
@@ -128,10 +127,10 @@ export const getCompany = async (
       return GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
     }
-    const { company_id } = req.params;
+    const { company_id } = req.params; // getting companyId through params
     if (!company_id) {
       return GlobleResponse.error({
         res,
@@ -168,7 +167,6 @@ export const getCompany = async (
 export const updateCompany = async (
   req: any,
   res: Response,
-  next: NextFunction
 ): Promise<void> => {
   try {
     const { adminId } = req.admin;
@@ -177,7 +175,7 @@ export const updateCompany = async (
       return GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
     }
 
@@ -279,18 +277,16 @@ export const updateCompany = async (
 export const deleteCompany = async (
   req: any,
   res: Response,
-  next: NextFunction
 ): Promise<void> => {
   try {
-    const {adminId} = req.admin
+    const { adminId } = req.admin;
 
-    if(!adminId)
-    {
+    if (!adminId) {
       return GlobleResponse.error({
         res,
-        status:httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
-      })
+        status: httpStatus.UNAUTHORIZED,
+        msg: ERROR_MSGS.AUTH_FAILED,
+      });
     }
     const { company_id } = req.params;
 

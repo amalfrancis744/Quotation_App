@@ -3,6 +3,6 @@ import * as userProfileController from "../../controllers/CompanyUser/userProfil
 
 const router = express.Router()
 
-router.get('/me', userProfileController.getUserProfile)
+router.get('/me', userProfileController.getUserProfile) // get user profile data
 
 export default router

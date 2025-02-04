@@ -10,29 +10,27 @@ const CompanySchema: Schema<ICompany> = new Schema(
     alias: {
       type: String,
     },
-    mobileNo:{
-      type:String,
+    mobileNo: {
+      type: String,
     },
-    state:{
-      type:String
+    state: {
+      type: String,
     },
-    email:{
-      type:String
+    email: {
+      type: String,
     },
     addresses: [
       {
-      
         address: { type: String },
-        city: { type: String, },
-        pincode: { type: String, },
-        district: { type: String, },
-        state: { type: String, },
+        city: { type: String },
+        pincode: { type: String },
+        district: { type: String },
+        state: { type: String },
         isActive: { type: Boolean, required: true, default: true },
       },
     ],
     accountDetails: [
       {
-       
         name: { type: String, required: true },
         accType: { type: String, required: true },
         mobileNo: { type: String, required: true },
@@ -45,14 +43,14 @@ const CompanySchema: Schema<ICompany> = new Schema(
     website: {
       type: String,
     },
-    isDeleted: { 
-      type: Boolean, 
-      default: false, 
-      required: true 
+    isDeleted: {
+      type: Boolean,
+      default: false,
+      required: true,
     },
-    deletedAt: { 
-      type: Date, 
-      default: null 
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   {

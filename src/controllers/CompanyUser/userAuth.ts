@@ -12,7 +12,6 @@ import { forgetPasswordMail } from "../../services/nodemailer";
 dotenv.config();
 
 // for company user login
-
 export const loginCompanyUser = async (
   req: Request,
   res: Response
@@ -35,6 +34,7 @@ export const loginCompanyUser = async (
       });
     }
 
+    // checking password if user found
     if (user) {
       const checkPassword = await bcrypt.compare(password, user.password);
       if (!checkPassword) {
@@ -45,8 +45,9 @@ export const loginCompanyUser = async (
         });
       }
     }
-    const SCERET_KEY = process.env.USER_JWT_SECRET || "mysceretkey";
 
+    const SCERET_KEY = process.env.USER_JWT_SECRET || "mysceretkey";
+    //  generate token
     const token = jwt.sign(
       {
         email: user.email,
@@ -84,8 +85,7 @@ export const loginCompanyUser = async (
 // forgot password
 export const forgotPassword = async (
   req: any,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   try {
     let { email } = req.body;
@@ -97,8 +97,9 @@ export const forgotPassword = async (
         msg: ERROR_MSGS.INVALID_CREDENTIALS,
       });
     }
-
+    // Convert email to lowercase for consistency
     email = email.toLowerCase();
+    // Find user in database by email
     const user = await userRepository.findUserByEmail(email);
     if (!user) {
       return GlobleResponse.error({
@@ -110,18 +111,20 @@ export const forgotPassword = async (
 
     // delete previously  generated token for user
     await userRepository.deleteToken(user._id);
-
+    // Generate a new random reset token
     let resetToken = crypto.randomBytes(32).toString("hex");
     let tokenHex = await bcrypt.hash(resetToken, 10);
     let expireTime = new Date().getTime() + 10 * 60 * 1000; // 10 minutes
+    // Store the reset token details in database
     let tokenDetail = await userRepository.createResetPasswordToken({
       userId: user._id,
       resetToken: tokenHex,
       expiresAt: expireTime,
     });
-
+    // Generate password reset URL with token
     let url = `${process.env.BACKEND_URL}/auth/verify-token?id=${tokenDetail.userId}&token=${tokenDetail.resetToken}`;
-    console.log("reset url==>", url);
+    // console.log("reset url==>", url);
+     // Send reset password email to user
     await forgetPasswordMail(url, email);
 
     return GlobleResponse.success({
@@ -144,7 +147,7 @@ export const verifyUrl = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    let { id, token } = req.query;
+    let { id, token } = req.query; //get id and token from the verifyUrl
     let tokenExist = await ResetPassword.findOne({
       userId: id,
       resetToken: token,
@@ -156,7 +159,8 @@ export const verifyUrl = async (
         msg: ERROR_MSGS.INVALID_TOKEN,
       });
     }
-
+  
+    //checking the token is expired (10 minutes) 
     let currentTime = new Date().getTime();
     if (new Date(tokenExist.expiresAt).getTime() < currentTime) {
       return GlobleResponse.error({
@@ -180,14 +184,13 @@ export const verifyUrl = async (
   }
 };
 
-// reset password
+// Reset password
 export const resetPassword = async (
   req: any,
   res: Response,
-  next: NextFunction
 ): Promise<void> => {
   try {
-    const { id, token, newPassword } = req.body;
+    const { id, token, newPassword } = req.body; 
 
     if (!id || !token || !newPassword) {
       return GlobleResponse.error({
@@ -208,7 +211,7 @@ export const resetPassword = async (
         msg: ERROR_MSGS.INVALID_TOKEN,
       });
     }
-
+    // if tokenExist updating user password and removing reset token from ResetPassword model
     if (tokenExist) {
       let passswordHex = await bcrypt.hash(newPassword, 10);
       await userRepository.updateById(id, { password: passswordHex });
@@ -227,5 +230,3 @@ export const resetPassword = async (
     });
   }
 };
-
-

@@ -5,19 +5,17 @@ import { ERROR_MSGS, INFO_MSGS } from "../../utils/constant";
 import * as userRepository from "../../repository/user.Repository";
 
 // get user profile detailes
-
 export const getUserProfile = async (
   req: any,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   try {
-    const {userId} = req.user;
+    const { userId } = req.user;
     if (!userId) {
       return GlobleResponse.error({
         res,
-        status: httpStatus.UNAUTHORIZED,   
-        msg: "Unauthorized access",
+        status: httpStatus.UNAUTHORIZED,
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
     }
 
@@ -48,7 +46,10 @@ export const getUserProfile = async (
       msg: INFO_MSGS.USER_DATA_FETCHED,
     });
   } catch (error) {
-    // Pass the error to the global error handler
-    next(error);
+    return GlobleResponse.error({
+      res,
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      msg: error instanceof Error ? error.message : String(error),
+    });
   }
 };

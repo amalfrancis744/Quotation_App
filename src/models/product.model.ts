@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import { IProduct } from "../interfaces/product.interfaces"; // calling the product interface
+import { IProduct } from "../interfaces/product.interfaces";
 
 const productSchema: Schema<IProduct> = new mongoose.Schema<IProduct>(
   {
-    name: { type: String, required: true }, // Product name
+    name: { type: String, required: true },
     category: { type: String, required: true }, // Product category
     productImage: {
       key: { type: String, required: true }, // S3 object key
@@ -16,10 +16,10 @@ const productSchema: Schema<IProduct> = new mongoose.Schema<IProduct>(
       required: true,
     }, // Company name
     sukCode: { type: String, required: true, unique: true }, // Unique product code
-    hsn: { type: String, required: true }, // HSN code
-    description: { type: String, required: true }, // Product description
-    gstPercentage: { type: Number }, // GST rate
-    discountPercentage: { type: Number }, // Discount rate
+    hsn: { type: String, required: true },
+    description: { type: String, required: true },
+    gstPercentage: { type: Number },
+    discountPercentage: { type: Number },
     mrp: { type: Number, required: true }, // Maximum Retail Price
     saleRate: { type: Number },
     excubleGST: { type: Number }, // Excuble GST percentage,

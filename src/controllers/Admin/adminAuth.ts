@@ -5,8 +5,8 @@ import httpStatus from "http-status";
 import { ERROR_MSGS, INFO_MSGS } from "../../utils/constant";
 import * as adminRepository from "../../repository/admin.Repository";
 import jwt from "jsonwebtoken";
-import dotenv from 'dotenv'
-dotenv.config()
+import dotenv from "dotenv";
+dotenv.config();
 
 // for admin creation routes
 export const registerAdmin = async (
@@ -14,13 +14,13 @@ export const registerAdmin = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { username, password } = req.body;
+    const { username, password } = req.body; // admin username & password
+    //checking username already exists
     const existingAdmin = await adminRepository.findAdminByUsername(username);
     if (existingAdmin) {
-      // Use the GlobleResponse for consistent error handling
       return GlobleResponse.error({
         res,
-        status: httpStatus.CONFLICT, // Use 409 Conflict status
+        status: httpStatus.CONFLICT,
         msg: ERROR_MSGS.USERNAME_EXITS,
       });
     }
@@ -52,12 +52,12 @@ export const registerAdmin = async (
 // for admin login
 export const loginAdmin = async (
   req: Request,
-  res: Response,
+  res: Response
 ): Promise<void> => {
   try {
     const { username, password } = req.body;
 
-    // Find admin
+    // get admin data with username
     const admin = await adminRepository.findAdminByUsername(username);
     if (!admin) {
       return GlobleResponse.error({
@@ -81,11 +81,10 @@ export const loginAdmin = async (
     const SCERET_KEY = process.env.ADMIN_JWT_SECRET || "mysceretkey";
 
     // Generate token
-    const token = jwt.sign({ adminId: admin._id },SCERET_KEY, {
-      expiresIn: '1h',
+    const token = jwt.sign({ adminId: admin._id }, SCERET_KEY, {
+      expiresIn: "1h",
     });
 
-    // Successful login response
     return GlobleResponse.success({
       res,
       status: httpStatus.OK,

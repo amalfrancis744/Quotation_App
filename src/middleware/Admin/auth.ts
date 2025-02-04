@@ -4,9 +4,7 @@ import { GlobleResponse } from "../../utils/response";
 import httpStatus from "http-status";
 import { ERROR_MSGS } from "../../utils/constant";
 import * as adminRepository from "../../repository/admin.Repository";
-import { adminTokenPayload } from '../../interfaces/auth.interfaces';
-
-
+import { adminTokenPayload } from "../../interfaces/auth.interfaces";
 
 export const adminAuthMiddleware = async (
   req: any,
@@ -14,7 +12,6 @@ export const adminAuthMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    // Get token from header
     const authHeader = req.headers.authorization;
     if (!authHeader) {
       return GlobleResponse.error({
@@ -44,7 +41,7 @@ export const adminAuthMiddleware = async (
     try {
       // Verify token
       const SCERET_KEY = process.env.ADMIN_JWT_SECRET;
-      const decoded = jwt.verify(token, SCERET_KEY!) as adminTokenPayload
+      const decoded = jwt.verify(token, SCERET_KEY!) as adminTokenPayload;
       const admin = await adminRepository.findAdminById(decoded.adminId);
 
       if (!admin) {
@@ -56,8 +53,8 @@ export const adminAuthMiddleware = async (
       }
 
       req.admin = {
-        adminId : admin._id
-      }
+        adminId: admin._id,
+      };
       next();
     } catch (err) {
       return GlobleResponse.error({

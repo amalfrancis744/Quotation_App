@@ -5,9 +5,10 @@ import { IProduct } from "../../interfaces/product.interfaces";
 import { ERROR_MSGS, INFO_MSGS } from "../../utils/constant";
 import * as userProductRepository from "../../repository/product.Repository";
 import { S3Service } from "../../services/s3.service";
-import { User } from "../../models/user.model";
 import * as companyRepository from "../../repository/company.Repository";
 import { processProductUrl } from "../../utils/processProductUrl";
+
+// Create a new product
 export const createProduct = async (req: any, res: Response): Promise<void> => {
   try {
     // Check user authentication and company ID
@@ -16,7 +17,7 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
       GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
       return;
     }
@@ -42,6 +43,7 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
     }
 
     const file = req.file as Express.MulterS3.File;
+    // AWS s3 object  and generating image URL
     const s3Service = new S3Service();
     const signedUrl = await s3Service.getSignedUrl(file.key);
     console.log("signedUrl===>", signedUrl);
@@ -129,10 +131,10 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
   }
 };
 
+// List all products for the current company
 export const getCompanyProducts = async (
   req: any,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
   try {
     const { userId, company } = req.user;
@@ -140,7 +142,7 @@ export const getCompanyProducts = async (
       return GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
     }
 
@@ -209,12 +211,12 @@ export const getProduct = async (req: any, res: Response): Promise<void> => {
   try {
     // Check authentication
     const { userId, company } = req.user;
-    // console.log("productId",req.params)
+
     if (!userId || !company) {
       GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
       return;
     }
@@ -283,7 +285,7 @@ export const updateProduct = async (
       GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
       return;
     }
@@ -367,7 +369,7 @@ export const updateProduct = async (
         GlobleResponse.error({
           res,
           status: httpStatus.CONFLICT,
-          msg: "Product with this name already exists",
+          msg: ERROR_MSGS.PRODUCT_NAME_EXISTS,
         });
         return;
       }
@@ -431,7 +433,7 @@ export const deleteProduct = async (req: any, res: Response): Promise<void> => {
       return GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED,
       });
     }
 
@@ -472,11 +474,14 @@ export const deleteProduct = async (req: any, res: Response): Promise<void> => {
     }
 
     // Mark product as deleted
-    const softDeletedProduct = await userProductRepository.UpdateById(productId, {
-      isDeleted: true,
-      deletedAt: new Date(),
-      deletedBy: userId,
-    });
+    const softDeletedProduct = await userProductRepository.UpdateById(
+      productId,
+      {
+        isDeleted: true,
+        deletedAt: new Date(),
+        deletedBy: userId,
+      }
+    );
 
     GlobleResponse.success({
       res,

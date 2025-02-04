@@ -6,10 +6,13 @@ import { updateCustomerSchema } from "../../middleware/Validation/customer/updat
 
 const router = express.Router();
 
-router.post('/create-customer',validateRequest(customerSchema),UserCustomerController.createCustomer);
-router.get("/all-company-customers",UserCustomerController.getAllCompanyCustomers)
-router.get("/:customer_id",UserCustomerController.getCustomer)
-router.put("/:customer_id",validateRequest(updateCustomerSchema),UserCustomerController.updateCustomer)
-router.delete("/:customer_id",UserCustomerController.deleteCustomer)
+router.post('/create-customer',validateRequest(customerSchema),UserCustomerController.createCustomer); //create new customer
+
+router.get("/all-company-customers",UserCustomerController.getAllCompanyCustomers) //get all company customers list
+router.get("/:customer_id",UserCustomerController.getCustomer) //get a specific customer data
+
+router.put("/:customer_id",validateRequest(updateCustomerSchema),UserCustomerController.updateCustomer) //update a spcific customer data 
+
+router.delete("/:customer_id",UserCustomerController.deleteCustomer) // delete a specific customer data
 
 export default router

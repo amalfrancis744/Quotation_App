@@ -7,7 +7,7 @@ import * as userRespository from "../../repository/user.Repository";
 import * as companyRepository from "../../repository/company.Repository";
 import mongoose from "mongoose";
 
-// for adding companyUser
+// for adding new companyUser by admin
 export const AddCompanyUser = async (
   req: any,
   res: Response
@@ -19,7 +19,7 @@ export const AddCompanyUser = async (
       return GlobleResponse.error({
         res,
         status: httpStatus.UNAUTHORIZED,
-        msg: "Unauthorized access",
+        msg: ERROR_MSGS.AUTH_FAILED
       });
     }
     const { firstName, lastName, email, password, company } = req.body;
@@ -97,7 +97,7 @@ export const AddCompanyUser = async (
     return GlobleResponse.error({
       res,
       status: httpStatus.INTERNAL_SERVER_ERROR,
-      msg: "An error occurred while registering the user.",
+      msg: ERROR_MSGS.REGISTER_USER_FAILED,
     });
   }
 };

@@ -7,10 +7,13 @@ import { updateProductSchema } from "../../middleware/Validation/product/updateP
 
 const router = express.Router();
 
-router.post("/create", uploadS3.single('productImage'),validateRequest(productSchema), UserProductController.createProduct);
-router.get("/company-products",UserProductController.getCompanyProducts)
-router.get('/:product_id',UserProductController.getProduct)
-router.put("/:product_id",uploadS3.single("productImage"),validateRequest(updateProductSchema),UserProductController.updateProduct)
-router.delete("/:product_id",UserProductController.deleteProduct)
+router.post("/create", uploadS3.single('productImage'),validateRequest(productSchema), UserProductController.createProduct); //create a product
+
+router.get("/company-products",UserProductController.getCompanyProducts)  // get all company products
+router.get('/:product_id',UserProductController.getProduct) // get a specific product
+
+router.put("/:product_id",uploadS3.single("productImage"),validateRequest(updateProductSchema),UserProductController.updateProduct) //update a specific product with id
+
+router.delete("/:product_id",UserProductController.deleteProduct) // delete a specific product with id
 
 export default router

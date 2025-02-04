@@ -11,19 +11,19 @@ import { validateCompanyUserSchema } from "../../middleware/Validation/companyUs
 
 const router = express.Router();
 
-router.post("/register",validateRequest(adminRegisterSchema), adminController.registerAdmin);
-router.post("/login", adminController.loginAdmin);
+router.post("/register",validateRequest(adminRegisterSchema), adminController.registerAdmin); //admin create
+router.post("/login", adminController.loginAdmin); // admin login
+router.post("/companies", adminAuthMiddleware,validateRequest(validateCompanySchema),companyController.createCompany);// company creation by admin
+router.post("/companies/addUser",adminAuthMiddleware,validateRequest(validateCompanyUserSchema),companyUserController.AddCompanyUser) // create companyUser by admin
 
-// company creation by admin
-router.post("/companies", adminAuthMiddleware,validateRequest(validateCompanySchema),companyController.createCompany);
-router.get("/companies", adminAuthMiddleware,companyController.getAllCompanies);
+router.get("/companies", adminAuthMiddleware,companyController.getAllCompanies); //get all compaies list
+router.get("/companies/:company_id", adminAuthMiddleware,companyController.getCompany); //get a specific company
 
-router.get("/companies/:company_id", adminAuthMiddleware,companyController.getCompany);
-router.put("/companies/:company_id", adminAuthMiddleware,validateRequest(updateValidationCompanySchema),companyController.updateCompany);
-router.delete("/companies/:company_id",adminAuthMiddleware,companyController.deleteCompany)
+router.put("/companies/:company_id", adminAuthMiddleware,validateRequest(updateValidationCompanySchema),companyController.updateCompany); //update specific company
+
+router.delete("/companies/:company_id",adminAuthMiddleware,companyController.deleteCompany) //delete a specific company
 
 
-// create companyUser by admin
-router.post("/companies/addUser",adminAuthMiddleware,validateRequest(validateCompanyUserSchema),companyUserController.AddCompanyUser)
+
 
 export default router;

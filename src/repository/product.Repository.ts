@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import Product from "../models/product.model";
 
+// get product data with perticular feilds 
 export const findOneByFeild = async (data: any) => {
   try {
     const product = await Product.findOne(data);
@@ -10,7 +11,8 @@ export const findOneByFeild = async (data: any) => {
     throw error;
   }
 };
-
+   
+// Inser new product data
 export const InsertData = async (data: any) => {
   try {
     const product = new Product(data);
@@ -20,6 +22,7 @@ export const InsertData = async (data: any) => {
   }
 };
 
+// get product data with productId and also populating company data also
 export const findByIdAndPopulate = async (id: mongoose.Types.ObjectId) => {
   try {
     const product = await Product.findById(id).populate("company");
@@ -29,6 +32,7 @@ export const findByIdAndPopulate = async (id: mongoose.Types.ObjectId) => {
   }
 };
 
+// get all compaies product with some filtered factors
 export const findAll = async (
   filters: any,
   options?: { skip?: number; limit?: number; sort?: any }
@@ -41,7 +45,7 @@ export const findAll = async (
       .limit(limit)
       .sort(sort)
       .populate({
-        path: 'company',
+        path: "company",
         select: `companyName
         alias
         mobileNo
@@ -54,7 +58,7 @@ export const findAll = async (
         deletedAt
         createdAt
         updatedAt`,
-        model: 'Company'
+        model: "Company",
       });
 
     return allProducts;
@@ -64,6 +68,7 @@ export const findAll = async (
   }
 };
 
+// count the product documents 
 export const CountAllProducts = async (data: any) => {
   try {
     const allCount = await Product.countDocuments(data);
@@ -73,6 +78,7 @@ export const CountAllProducts = async (data: any) => {
   }
 };
 
+// update product by Id. 
 export const UpdateById = async (id: string, updateData: any) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
