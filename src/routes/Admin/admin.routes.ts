@@ -7,6 +7,7 @@ import { validateRequest } from "../../middleware/Validation/validation";
 import { adminRegisterSchema } from "../../middleware/Validation/admin/admin.validation";
 import { validateCompanySchema } from "../../middleware/Validation/company/company.validation";
 import { updateValidationCompanySchema } from "../../middleware/Validation/company/updation.validation";
+import { validateCompanyUserSchema } from "../../middleware/Validation/companyUser/companyUser.validation";
 
 const router = express.Router();
 
@@ -23,6 +24,6 @@ router.delete("/companies/:company_id",adminAuthMiddleware,companyController.del
 
 
 // create companyUser by admin
-router.post("/companies/addUser",adminAuthMiddleware,companyUserController.AddCompanyUser)
+router.post("/companies/addUser",adminAuthMiddleware,validateRequest(validateCompanyUserSchema),companyUserController.AddCompanyUser)
 
 export default router;
