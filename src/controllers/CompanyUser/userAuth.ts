@@ -124,7 +124,7 @@ export const forgotPassword = async (
     // Generate password reset URL with token
     let url = `${process.env.BACKEND_URL}/auth/verify-token?id=${tokenDetail.userId}&token=${tokenDetail.resetToken}`;
     // console.log("reset url==>", url);
-     // Send reset password email to user
+    // Send reset password email to user
     await forgetPasswordMail(url, email);
 
     return GlobleResponse.success({
@@ -159,8 +159,8 @@ export const verifyUrl = async (
         msg: ERROR_MSGS.INVALID_TOKEN,
       });
     }
-  
-    //checking the token is expired (10 minutes) 
+
+    //checking the token is expired (10 minutes)
     let currentTime = new Date().getTime();
     if (new Date(tokenExist.expiresAt).getTime() < currentTime) {
       return GlobleResponse.error({
@@ -185,12 +185,9 @@ export const verifyUrl = async (
 };
 
 // Reset password
-export const resetPassword = async (
-  req: any,
-  res: Response,
-): Promise<void> => {
+export const resetPassword = async (req: any, res: Response): Promise<void> => {
   try {
-    const { id, token, newPassword } = req.body; 
+    const { id, token, newPassword } = req.body;
 
     if (!id || !token || !newPassword) {
       return GlobleResponse.error({

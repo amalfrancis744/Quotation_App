@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Connect to MongoDB with local
-const dbUri: string = process.env.MONGODB_URI || 'mongodb://localhost:27017/quotationapp';
+const dbUri: string = process.env.MONGODB_URI || 'mongodb+srv://amalfrancis744:amal2023@cluster0.7rxwgrn.mongodb.net/';
 
 // db connection
 const connectDB = async (): Promise<void> => {

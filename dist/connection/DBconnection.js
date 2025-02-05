@@ -44,7 +44,7 @@ var dotenv_1 = __importDefault(require("dotenv"));
 // Load environment variables from .env file
 dotenv_1.default.config();
 // Connect to MongoDB with local
-var dbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/quotationapp';
+var dbUri = process.env.MONGODB_URI || 'mongodb+srv://amalfrancis744:amal2023@cluster0.7rxwgrn.mongodb.net/';
 // db connection
 var connectDB = function () { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
