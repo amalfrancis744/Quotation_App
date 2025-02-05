@@ -123,7 +123,7 @@ export const forgotPassword = async (
     });
     // Generate password reset URL with token
     let url = `${process.env.BACKEND_URL}/auth/verify-token?id=${tokenDetail.userId}&token=${tokenDetail.resetToken}`;
-    // console.log("reset url==>", url);
+    console.log("reset url==>", url);
     // Send reset password email to user
     await forgetPasswordMail(url, email);
 
@@ -197,11 +197,19 @@ export const resetPassword = async (req: any, res: Response): Promise<void> => {
       });
     }
     const user = await userRepository.findUserById(id);
+
+    if (!user) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.USER_NOT_FOUND,
+    })
+   }
     const tokenExist = await ResetPassword.findOne({
       userId: id,
       resetToken: token,
     });
-    if (!user || !tokenExist) {
+    if (!tokenExist) {
       return GlobleResponse.error({
         res,
         status: httpStatus.BAD_REQUEST,

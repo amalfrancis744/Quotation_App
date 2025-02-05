@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./connection/DBconnection";
 import cors from "cors";
@@ -22,7 +22,7 @@ app.use(cors(corsOptions));
 
 // Basic route
 app.get("/", (req, res) => {
-  res.send("Hello, world!");
+  res.send("Hello welcome to backend!");
 });
 
 // db connection

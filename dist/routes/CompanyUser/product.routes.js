@@ -43,7 +43,7 @@ var validation_1 = require("../../middleware/Validation/validation");
 var product_validate_1 = require("../../middleware/Validation/product/product.validate");
 var updateProduct_validate_1 = require("../../middleware/Validation/product/updateProduct.validate");
 var router = express_1.default.Router();
-router.post("/create", fileUpload_1.uploadS3.single('productImage'), (0, validation_1.validateRequest)(product_validate_1.productSchema), UserProductController.createProduct); //create a product
+router.post("/create", fileUpload_1.uploadS3.single('productImage'), fileUpload_1.handleUploadError, (0, validation_1.validateRequest)(product_validate_1.productSchema), UserProductController.createProduct); //create a product
 router.get("/company-products", UserProductController.getCompanyProducts); // get all company products
 router.get('/:product_id', UserProductController.getProduct); // get a specific product
 router.put("/:product_id", fileUpload_1.uploadS3.single("productImage"), (0, validation_1.validateRequest)(updateProduct_validate_1.updateProductSchema), UserProductController.updateProduct); //update a specific product with id

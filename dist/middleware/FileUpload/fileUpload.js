@@ -30,6 +30,7 @@ exports.generateFileName = generateFileName;
 exports.uploadS3 = (0, multer_1.default)({
     limits: {
         fileSize: MAX_FILE_SIZE,
+        files: 1
     },
     fileFilter: fileFilter,
     storage: (0, multer_s3_1.default)({
@@ -46,19 +47,24 @@ exports.uploadS3 = (0, multer_1.default)({
         },
     }),
 });
-// Error handler middleware
+var response_1 = require("../../utils/response");
+var http_status_1 = __importDefault(require("http-status"));
 var handleUploadError = function (error, req, res, next) {
     if (error instanceof multer_1.default.MulterError) {
         if (error.code === "LIMIT_FILE_SIZE") {
-            return res.status(400).json({
-                success: false,
-                message: "".concat(constant_1.ERROR_MSGS.FILE_TOO_LARGE, ". Maximum size is ").concat(MAX_FILE_SIZE / (1024 * 1024), "MB"),
+            response_1.GlobleResponse.error({
+                msg: constant_1.ERROR_MSGS.FILE_SIZE_EXCEEDED,
+                res: res,
+                status: http_status_1.default.INTERNAL_SERVER_ERROR
             });
+            return;
         }
-        return res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({ res: false, message: error.message });
+        return;
     }
     if (error) {
-        return res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({ res: false, message: error.message });
+        return;
     }
     next();
 };

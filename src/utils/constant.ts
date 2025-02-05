@@ -37,6 +37,7 @@ export const STATUS_CODE = {
     COMPANY_CREATION_FAILED:"Company creation failed",
     USERNAME_EXITS:"Username already exists",
     REGISTER_USER_FAILED:"An error occurred while registering the user.",    
+    FILE_SIZE_EXCEEDED:"File is too large",
 
 
     

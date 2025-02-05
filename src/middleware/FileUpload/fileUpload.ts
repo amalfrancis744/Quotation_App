@@ -19,6 +19,8 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: Function) => {
   cb(null, true);
 };
 
+
+
 // Generate unique filename
 export const generateFileName = (file: Express.Multer.File): string => {
   const fileExtension = path.extname(file.originalname);
@@ -29,6 +31,7 @@ export const generateFileName = (file: Express.Multer.File): string => {
 export const uploadS3 = multer({
   limits: {
     fileSize: MAX_FILE_SIZE,
+    files:1
   },
   fileFilter,
   storage: multerS3({
@@ -46,26 +49,32 @@ export const uploadS3 = multer({
   }),
 });
 // Error handler middleware
-export const handleUploadError = (
+import { ErrorRequestHandler } from "express";
+import { GlobleResponse } from "../../utils/response";
+import httpStatus from 'http-status';
+
+export const handleUploadError: ErrorRequestHandler = (
   error: any,
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   if (error instanceof multer.MulterError) {
     if (error.code === "LIMIT_FILE_SIZE") {
-      return res.status(400).json({
-        success: false,
-        message: `${ERROR_MSGS.FILE_TOO_LARGE}. Maximum size is ${
-          MAX_FILE_SIZE / (1024 * 1024)
-        }MB`,
+      GlobleResponse.error({
+        msg: ERROR_MSGS.FILE_SIZE_EXCEEDED,
+        res,
+        status: httpStatus.INTERNAL_SERVER_ERROR
       });
+      return;
     }
-    return res.status(400).json({ success: false, message: error.message });
+    res.status(400).json({ res: false, message: error.message });
+    return;
   }
 
   if (error) {
-    return res.status(400).json({ success: false, message: error.message });
+    res.status(400).json({ res: false, message: error.message });
+    return;
   }
   next();
 };

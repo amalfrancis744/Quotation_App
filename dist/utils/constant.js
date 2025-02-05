@@ -39,6 +39,7 @@ exports.ERROR_MSGS = {
     COMPANY_CREATION_FAILED: "Company creation failed",
     USERNAME_EXITS: "Username already exists",
     REGISTER_USER_FAILED: "An error occurred while registering the user.",
+    FILE_SIZE_EXCEEDED: "File is too large",
     INVALID_VERIFICATION_TOKEN: 'The provided verification token is invalid or Expired. Please verify and try again.',
     EMAIL_EXISTS: 'Email already exists.',
     EMAIL_SENT: 'Email already sent.',

@@ -199,11 +199,10 @@ var forgotPassword = function (req, res) { return __awaiter(void 0, void 0, void
             case 4:
                 tokenDetail = _a.sent();
                 url = "".concat(process.env.BACKEND_URL, "/auth/verify-token?id=").concat(tokenDetail.userId, "&token=").concat(tokenDetail.resetToken);
-                // console.log("reset url==>", url);
+                console.log("reset url==>", url);
                 // Send reset password email to user
                 return [4 /*yield*/, (0, nodemailer_1.forgetPasswordMail)(url, email)];
             case 5:
-                // console.log("reset url==>", url);
                 // Send reset password email to user
                 _a.sent();
                 return [2 /*return*/, response_1.GlobleResponse.success({
@@ -286,13 +285,20 @@ var resetPassword = function (req, res) { return __awaiter(void 0, void 0, void 
                 return [4 /*yield*/, userRepository.findUserById(id)];
             case 1:
                 user = _b.sent();
+                if (!user) {
+                    return [2 /*return*/, response_1.GlobleResponse.error({
+                            res: res,
+                            status: http_status_1.default.NOT_FOUND,
+                            msg: constant_1.ERROR_MSGS.USER_NOT_FOUND,
+                        })];
+                }
                 return [4 /*yield*/, resetPassword_model_1.default.findOne({
                         userId: id,
                         resetToken: token,
                     })];
             case 2:
                 tokenExist = _b.sent();
-                if (!user || !tokenExist) {
+                if (!tokenExist) {
                     return [2 /*return*/, response_1.GlobleResponse.error({
                             res: res,
                             status: http_status_1.default.BAD_REQUEST,

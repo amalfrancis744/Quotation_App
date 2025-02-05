@@ -38,7 +38,6 @@ export class S3Service {
         Bucket: this.bucket,
         Key: key,
       });
-
       await this.s3Client.send(command);
       return true;
     } catch (error) {
