@@ -8,10 +8,10 @@ import { Company } from "../../models/comapny.model";
 // List all companies
 export const getAllCompanies = async (
   req: any,
-  res: Response,
+  res: Response
 ): Promise<void> => {
   try {
-    const { adminId } = req.admin;    // checking admin valid -token-middleware
+    const { adminId } = req.admin; // checking admin valid -token-middleware
 
     if (!adminId) {
       return GlobleResponse.error({
@@ -38,12 +38,9 @@ export const getAllCompanies = async (
 };
 
 // Create a new company
-export const createCompany = async (
-  req: any,
-  res: Response,
-): Promise<void> => {
+export const createCompany = async (req: any, res: Response): Promise<void> => {
   try {
-    const { adminId } = req.admin;  // checking admin valid -token-middleware
+    const { adminId } = req.admin; // checking admin valid -token-middleware
 
     if (!adminId) {
       return GlobleResponse.error({
@@ -164,10 +161,7 @@ export const getCompany = async (
 };
 
 // Update a specific company
-export const updateCompany = async (
-  req: any,
-  res: Response,
-): Promise<void> => {
+export const updateCompany = async (req: any, res: Response): Promise<void> => {
   try {
     const { adminId } = req.admin;
 
@@ -274,10 +268,7 @@ export const updateCompany = async (
 };
 
 // Delete a specific company
-export const deleteCompany = async (
-  req: any,
-  res: Response,
-): Promise<void> => {
+export const deleteCompany = async (req: any, res: Response): Promise<void> => {
   try {
     const { adminId } = req.admin;
 
