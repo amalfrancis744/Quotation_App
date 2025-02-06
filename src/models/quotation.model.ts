@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose ,{ Schema } from "mongoose";
+import {  IQuotation } from "../interfaces/quotation.interface";
 
-const quotationSchema = new mongoose.Schema({
+const quotationSchema:Schema<IQuotation> = new mongoose.Schema<IQuotation>({
   contractor: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
   company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
   items: [
@@ -11,10 +12,8 @@ const quotationSchema = new mongoose.Schema({
     },
   ],
   totalAmount: { type: Number, required: true },
-
   // Additional Fields
-  date: { type: Date, default: Date.now },
-  jNo: { type: String },
+  jNo: { type: String ,unique:true},
   party: { type: String },
   email: { type: String },
   billQty: { type: Number },
@@ -28,9 +27,17 @@ const quotationSchema = new mongoose.Schema({
   },
   quotationFormat: {
     type: String,
-    enum: ["gstWithoutRate", "gstWithRate"], // Quotation format options
+    enum: ["gstWithoutRate", "gstWithRate","gst"], // Quotation format options
     default: "gstWithoutRate",
   },
-});
+  isDeleted: { type: Boolean, default: false },
+  deletedAt: { type: Date },
+  deletedBy: { type: Schema.Types.ObjectId, ref: "User" },
+  status: { type:String, enum:["pending","approved","rejected","expired"],default:"pending"}
+ },
+ { timestamps: true }
+);
 
-module.exports = mongoose.model("Quotation", quotationSchema);
+const Quotation = mongoose.model<IQuotation>("Quotation", quotationSchema);
+
+export default Quotation;

@@ -175,3 +175,21 @@ export const findCustomerById = async (customerId: string) => {
     throw error;
   }
 };
+
+
+export const getCustomerWithCompanyDetails = async (customerId:string,company:string)=>{
+
+  try{
+    const customer = await Customer.findOne({
+      _id: customerId,
+      company,
+      isDeleted: false,
+    })
+   return customer;
+  } catch (error) {
+    console.error("Error in getCustomerById", error);
+    throw error;
+  }
+}
+
+

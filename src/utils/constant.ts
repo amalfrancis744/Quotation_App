@@ -38,6 +38,11 @@ export const STATUS_CODE = {
     USERNAME_EXITS:"Username already exists",
     REGISTER_USER_FAILED:"An error occurred while registering the user.",    
     FILE_SIZE_EXCEEDED:"File is too large",
+    JNO_ALREADY_EXISTS: "Quotation already exists with JNo",
+    PRODUCT_ID_REQUIRED:"Product id is required",
+    QUOTATION_NOT_FOUND:"Quotation not found",
+    QUOTATION_DELETE_FAILED:"Quotatio deletion failed",
+    NO_ITEMS_IN_QUOTATION :"Items not found in the quotation",
 
 
     
@@ -81,6 +86,8 @@ export const STATUS_CODE = {
     NO_CUSTOMERS_FOUND:"No customers are connected with this company",
     CUSTOMER_NOT_FOUND:"Customer data not found",
     PRODUCT_NAME_EXISTS:"Product with this name already exists",
+    INVALID_ITEMS:"Product items are empty",
+    NO_QUOTATION_FOUND:"No quotation found"
      
   } as const
   
@@ -109,7 +116,15 @@ export const STATUS_CODE = {
     CUSTOMER_RETRIEVED:"Customer fetched successfully",
     CUSTOMERS_LISTED: "Company customers list fetched successfully",
     CUSTOMER_UPDATED:"Customer updation compeleted successfully",
-    CUSTOMER_DELETED:"Customer deleted successfully"
+    CUSTOMER_DELETED:"Customer deleted successfully",
+
+
+    QUOTATION_CREATED:"Quotation created successfully",
+    QUOTATION_RETRIEVED:"Quotation fetched successfully",
+    QUOTATION_UPDATED:"Quotation updation compeleted successfully",
+    QUOTATION_DELETED_SUCCESSFULL:"Quotation delete  successfully",
+    ITEMS_FETCHED:"Items fetched successfully"
+    
   } as const
   
 

@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findCustomerById = exports.getCustomersByCompany = exports.FindCustomerByAll = exports.updateCustomerById = exports.createCustomer = exports.findCustomerByIdandCompany = void 0;
+exports.getCustomerWithCompanyDetails = exports.findCustomerById = exports.getCustomersByCompany = exports.FindCustomerByAll = exports.updateCustomerById = exports.createCustomer = exports.findCustomerByIdandCompany = void 0;
 var customer_model_1 = __importDefault(require("../models/customer.model"));
 // find customer data by customerId
 // export const FindCustomerById = async (id: string) => { 
@@ -216,3 +216,26 @@ var findCustomerById = function (customerId) { return __awaiter(void 0, void 0, 
     });
 }); };
 exports.findCustomerById = findCustomerById;
+var getCustomerWithCompanyDetails = function (customerId, company) { return __awaiter(void 0, void 0, void 0, function () {
+    var customer, error_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, customer_model_1.default.findOne({
+                        _id: customerId,
+                        company: company,
+                        isDeleted: false,
+                    })];
+            case 1:
+                customer = _a.sent();
+                return [2 /*return*/, customer];
+            case 2:
+                error_6 = _a.sent();
+                console.error("Error in getCustomerById", error_6);
+                throw error_6;
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getCustomerWithCompanyDetails = getCustomerWithCompanyDetails;

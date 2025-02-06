@@ -10,6 +10,7 @@ var userAuth_routes_1 = __importDefault(require("./CompanyUser/userAuth.routes")
 var userProfile_routes_1 = __importDefault(require("./CompanyUser/userProfile.routes"));
 var product_routes_1 = __importDefault(require("./CompanyUser/product.routes"));
 var customer_routes_1 = __importDefault(require("./CompanyUser/customer.routes"));
+var quotation_routes_1 = __importDefault(require("./CompanyUser/quotation.routes"));
 var auth_1 = require("../middleware/CompanyUser/auth");
 var router = express_1.default.Router();
 exports.apiRouter = router;
@@ -19,3 +20,4 @@ router.use("/auth", userAuth_routes_1.default); // companyUser related routes
 router.use("/users", auth_1.authUserMiddleware, userProfile_routes_1.default); // companyUser profile
 router.use("/products", auth_1.authUserMiddleware, product_routes_1.default); // companyUser managing products
 router.use("/customers", auth_1.authUserMiddleware, customer_routes_1.default); // companyUser managing customers
+router.use('/quotations', auth_1.authUserMiddleware, quotation_routes_1.default);
