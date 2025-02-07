@@ -21,15 +21,13 @@ var validateRequest = function (schema) {
         }
         catch (error) {
             if (error instanceof zod_1.z.ZodError) {
-                var errors = error.errors.map(function (err) { return ({
-                    field: err.path.join("."),
-                    message: err.message,
-                }); });
+                // Get the first error message
+                var firstError = error.errors[0];
+                var errorMessage = "".concat(firstError.message);
                 return response_1.GlobleResponse.error({
                     res: res,
                     status: http_status_1.default.BAD_REQUEST,
-                    msg: constant_1.ERROR_MSGS.VALIDATION_ERROR,
-                    data: errors,
+                    msg: errorMessage,
                 });
             }
             response_1.GlobleResponse.error({

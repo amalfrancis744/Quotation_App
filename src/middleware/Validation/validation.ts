@@ -16,15 +16,14 @@ export const validateRequest = (schema: ZodSchema) => {
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const errors = error.errors.map((err) => ({
-          field: err.path.join("."),
-          message: err.message,
-        }));
+        // Get the first error message
+        const firstError = error.errors[0];
+        const errorMessage = `${firstError.message}`;
+
         return GlobleResponse.error({
           res,
           status: httpStatus.BAD_REQUEST,
-          msg: ERROR_MSGS.VALIDATION_ERROR,
-          data: errors,
+          msg: errorMessage,
         });
       }
       GlobleResponse.error({
