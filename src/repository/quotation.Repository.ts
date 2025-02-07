@@ -40,10 +40,14 @@ export const findWithFeild = async (jNo: string) => {
               select: 'name email phone',
             },
             {
+              path: 'company',
+              select: 'companyName ',
+            },
+            {
               path: 'items.product',
               select: 'name price description',
             },
-          ]);
+          ]).lean()
         return quotation;
     } catch (error) {
         console.error('Error in findQuotationById:', error);
@@ -73,3 +77,76 @@ export const updateById =  async(id:string,updateData:any)=>{
         throw error;
     }
 }
+
+// check the quotation and items exists in the collection
+export const checkQuotationItemExists = async (quotationId: string, itemId: string) => {
+  try {
+      // Validate if the IDs are valid MongoDB ObjectIDs
+      if (!mongoose.Types.ObjectId.isValid(quotationId) || !mongoose.Types.ObjectId.isValid(itemId)) {
+          return false;
+      }
+
+      // Find quotation and check if the specific item exists
+      const quotation = await Quotation.findOne({
+          _id: quotationId,
+          isDeleted: false,
+          'items._id': itemId
+      });
+
+      // Return true if quotation with the specific item was found, false otherwise
+      return quotation
+
+  } catch (error) {
+      console.error("Error in checkQuotationItemExists:", error);
+      throw error;
+  }
+};
+
+export const updateQuotationItem = async (item_id: string, data: any) => {
+  try {
+
+    // Find the Quotation document that contains the item with the given item_id
+    const updateItem = await Quotation.findOneAndUpdate(
+      { "items._id": item_id }, // Find the document where the items array contains an item with the given _id
+      {
+        $set: {
+          "items.$.product": data.product_id, // Update product
+          "items.$.price": data.price, // Update price
+          "items.$.quantity": data.quantity, // Update quantity
+        },
+      },
+      { new: true } // Return the updated document
+    );
+
+    if (!updateItem) {
+      throw new Error("Quotation item not found");
+    }
+
+    return updateItem; // Return the updated document
+  } catch (error) {
+    console.error(`Error found in the updateQuotationItem:`, error);
+    throw error;
+  }
+};
+
+
+export const deleteQuotationItem = async(item_id:string)=>{
+
+   try{
+    const updatedQuotation = await Quotation.findOneAndUpdate(
+      { "items._id": item_id }, // Find the document containing the item
+      { $pull: { items: { _id: item_id } } }, // Remove the item from the array
+      { new: true } // Return the updated document
+    );
+
+    return updatedQuotation;
+   }
+   catch(error)
+   {
+    console.error("Error in deleteQuotationItem:", error);
+    throw error;
+   }
+
+}
+
+

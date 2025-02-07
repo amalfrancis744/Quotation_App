@@ -45,6 +45,8 @@ exports.ERROR_MSGS = {
     QUOTATION_NOT_FOUND: "Quotation not found",
     QUOTATION_DELETE_FAILED: "Quotatio deletion failed",
     NO_ITEMS_IN_QUOTATION: "Items not found in the quotation",
+    QUOTATION_ITEM_NOT_FOUND: "Quotation of item not found ",
+    ITEM_UPDATION_FAILED: "Item updation is failed",
     INVALID_VERIFICATION_TOKEN: 'The provided verification token is invalid or Expired. Please verify and try again.',
     EMAIL_EXISTS: 'Email already exists.',
     EMAIL_SENT: 'Email already sent.',
@@ -112,5 +114,7 @@ exports.INFO_MSGS = {
     QUOTATION_RETRIEVED: "Quotation fetched successfully",
     QUOTATION_UPDATED: "Quotation updation compeleted successfully",
     QUOTATION_DELETED_SUCCESSFULL: "Quotation delete  successfully",
-    ITEMS_FETCHED: "Items fetched successfully"
+    ITEMS_FETCHED: "Items fetched successfully",
+    ITEM_UPDATION_SUCCESSFULLY: "Item updated successfully",
+    QUOTATION_ITEM_DELETED_SUCCESSFULLY: "Item deleted successfully"
 };

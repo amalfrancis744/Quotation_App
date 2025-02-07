@@ -7,6 +7,7 @@ import * as userQuotationRepository from "../../repository/quotation.Repository"
 import * as companyRepository from "../../repository/company.Repository";
 import * as companyCustomerRepository from "../../repository/customer.Repository";
 import Quotation from "../../models/quotation.model";
+import { generateQuotationPDF } from "../../services/pdfGenerator";
 
 export const createQuotation = async (
   req: any,
@@ -544,19 +545,204 @@ export const getQuotationItemsById = async (
 
 // Update an item in a quotation
 
-export const updateQuotationItemById =  async(req:any,res:Response,next:NextFunction):Promise<void>=>{
+export const updateQuotationItemById = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { userId, company } = req.user;
+    // Validate user and company
+    if (!userId || !company) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: ERROR_MSGS.AUTH_FAILED,
+      });
+    }
+    // Fetch customers by company
+    // Verify if company exists
+    const companyData = await companyRepository.findCompanyById(company);
+    if (!companyData) {
+      GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
+      });
+      return;
+    }
+    const { quotation_id, item_Id } = req.params;
+    const quotationWithItem =
+      await userQuotationRepository.checkQuotationItemExists(
+        quotation_id,
+        item_Id
+      );
+    if (!quotationWithItem) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.QUOTATION_ITEM_NOT_FOUND,
+      });
+    }
+    const { product_id, price, quantity } = req.body;
 
-    try{
+    // check the product is existsing
+    const validProduct = await userProductRepository.findOneByFeild({
+      _id: product_id,
+      company,
+      isDeleted: false,
+    });
+
+    if (!validProduct) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: `Product with ID ${product_id} not found or doesn't belong to this company`,
+      });
+    }
+
+    const updatedItem = await userQuotationRepository.updateQuotationItem(
+      item_Id,
+      { product_id: product_id, price: price, quantity: quantity }
+    );
+
+    if (!updatedItem) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        msg: ERROR_MSGS.ITEM_UPDATION_FAILED,
+      });
+    }
+
+    return GlobleResponse.success({
+      res,
+      status: httpStatus.OK,
+      msg: INFO_MSGS.ITEM_UPDATION_SUCCESSFULLY,
+    });
+
+    // Update item in quotation
+  } catch (error) {
+    return GlobleResponse.error({
+      res,
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      msg: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+export const deleteQuotationItemById = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { userId, company } = req.user;
+    // Validate user and company
+    if (!userId || !company) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: ERROR_MSGS.AUTH_FAILED,
+      });
+    }
+    // Fetch customers by company
+    // Verify if company exists
+    const companyData = await companyRepository.findCompanyById(company);
+    if (!companyData) {
+      GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
+      });
+      return;
+    }
+    const { quotation_id, item_Id } = req.params;
+    const quotationWithItem =
+      await userQuotationRepository.checkQuotationItemExists(
+        quotation_id,
+        item_Id
+      );
+    if (!quotationWithItem) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.QUOTATION_ITEM_NOT_FOUND,
+      });
+    }
+
+    const deleteItem = await userQuotationRepository.deleteQuotationItem(
+      item_Id
+    );
+
+    if (deleteItem) {
+      return GlobleResponse.success({
+        res,
+        msg: INFO_MSGS.QUOTATION_ITEM_DELETED_SUCCESSFULLY,
+        status: httpStatus.OK,
+      });
+    }
+  } catch (error) {
+    return GlobleResponse.error({
+      res,
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      msg: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+export const generateQuotationPdf = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { userId, company } = req.user;
+    // Validate user and company
+    if (!userId || !company) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.UNAUTHORIZED,
+        msg: ERROR_MSGS.AUTH_FAILED,
+      });
+    }
+    // Fetch customers by company
+    // Verify if company exists
+    const companyData = await companyRepository.findCompanyById(company);
+    if (!companyData) {
+      GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.COMAPNY_NOT_FOUND,
+      });
+      return;
+    }
+
+    const { quotation_id } = req.params;
+    const quotation = await userQuotationRepository.findQuotationById(
+      quotation_id
+    );
+    if (!quotation) {
+      return GlobleResponse.error({
+        res,
+        status: httpStatus.NOT_FOUND,
+        msg: ERROR_MSGS.QUOTATION_NOT_FOUND,
+      });
+    }
+    console.log(quotation)
+
+    const pdfDoc = await generateQuotationPDF(quotation);
+
+
+ 
+
+  return GlobleResponse.success({
+    res,
+    data:{
+      pdfDoc,
+      quotation
 
     }
-    catch(error)
-    {
-        return GlobleResponse.error({
-            res,
-            status:httpStatus.INTERNAL_SERVER_ERROR,
-            msg: error instanceof Error ? error.message : String(error),
-        })
-    }
+  })
 
-
-}
+  } catch (error) {}
+};

@@ -83,7 +83,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateQuotationItemById = exports.getQuotationItemsById = exports.deleteQuotation = exports.updateQuation = exports.getQuotation = exports.getAllCompaniesQuotation = exports.createQuotation = void 0;
+exports.generateQuotationPdf = exports.deleteQuotationItemById = exports.updateQuotationItemById = exports.getQuotationItemsById = exports.deleteQuotation = exports.updateQuation = exports.getQuotation = exports.getAllCompaniesQuotation = exports.createQuotation = void 0;
 var response_1 = require("../../utils/response");
 var http_status_1 = __importDefault(require("http-status"));
 var constant_1 = require("../../utils/constant");
@@ -92,6 +92,7 @@ var userQuotationRepository = __importStar(require("../../repository/quotation.R
 var companyRepository = __importStar(require("../../repository/company.Repository"));
 var companyCustomerRepository = __importStar(require("../../repository/customer.Repository"));
 var quotation_model_1 = __importDefault(require("../../models/quotation.model"));
+var pdfGenerator_1 = require("../../services/pdfGenerator");
 var createQuotation = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, userId, company, companyData, _b, contractor, items, jNo, party, email, billQty, salesMan, discPercentage, netAmount, grossAmount, overallDiscount, quotationFormat, totalAmount, _i, items_1, item, validProduct, customerId, isCustomerValid, isJNoExists, newQuotation, savedQuotation, error_1;
     return __generator(this, function (_c) {
@@ -589,17 +590,197 @@ var getQuotationItemsById = function (req, res, next) { return __awaiter(void 0,
 exports.getQuotationItemsById = getQuotationItemsById;
 // Update an item in a quotation
 var updateQuotationItemById = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        try {
+    var _a, userId, company, companyData, _b, quotation_id, item_Id, quotationWithItem, _c, product_id, price, quantity, validProduct, updatedItem, error_7;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
+            case 0:
+                _d.trys.push([0, 5, , 6]);
+                _a = req.user, userId = _a.userId, company = _a.company;
+                // Validate user and company
+                if (!userId || !company) {
+                    return [2 /*return*/, response_1.GlobleResponse.error({
+                            res: res,
+                            status: http_status_1.default.UNAUTHORIZED,
+                            msg: constant_1.ERROR_MSGS.AUTH_FAILED,
+                        })];
+                }
+                return [4 /*yield*/, companyRepository.findCompanyById(company)];
+            case 1:
+                companyData = _d.sent();
+                if (!companyData) {
+                    response_1.GlobleResponse.error({
+                        res: res,
+                        status: http_status_1.default.NOT_FOUND,
+                        msg: constant_1.ERROR_MSGS.COMAPNY_NOT_FOUND,
+                    });
+                    return [2 /*return*/];
+                }
+                _b = req.params, quotation_id = _b.quotation_id, item_Id = _b.item_Id;
+                return [4 /*yield*/, userQuotationRepository.checkQuotationItemExists(quotation_id, item_Id)];
+            case 2:
+                quotationWithItem = _d.sent();
+                if (!quotationWithItem) {
+                    return [2 /*return*/, response_1.GlobleResponse.error({
+                            res: res,
+                            status: http_status_1.default.NOT_FOUND,
+                            msg: constant_1.ERROR_MSGS.QUOTATION_ITEM_NOT_FOUND,
+                        })];
+                }
+                _c = req.body, product_id = _c.product_id, price = _c.price, quantity = _c.quantity;
+                return [4 /*yield*/, userProductRepository.findOneByFeild({
+                        _id: product_id,
+                        company: company,
+                        isDeleted: false,
+                    })];
+            case 3:
+                validProduct = _d.sent();
+                if (!validProduct) {
+                    return [2 /*return*/, response_1.GlobleResponse.error({
+                            res: res,
+                            status: http_status_1.default.NOT_FOUND,
+                            msg: "Product with ID ".concat(product_id, " not found or doesn't belong to this company"),
+                        })];
+                }
+                return [4 /*yield*/, userQuotationRepository.updateQuotationItem(item_Id, { product_id: product_id, price: price, quantity: quantity })];
+            case 4:
+                updatedItem = _d.sent();
+                if (!updatedItem) {
+                    return [2 /*return*/, response_1.GlobleResponse.error({
+                            res: res,
+                            status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                            msg: constant_1.ERROR_MSGS.ITEM_UPDATION_FAILED,
+                        })];
+                }
+                return [2 /*return*/, response_1.GlobleResponse.success({
+                        res: res,
+                        status: http_status_1.default.OK,
+                        msg: constant_1.INFO_MSGS.ITEM_UPDATION_SUCCESSFULLY,
+                    })];
+            case 5:
+                error_7 = _d.sent();
+                return [2 /*return*/, response_1.GlobleResponse.error({
+                        res: res,
+                        status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                        msg: error_7 instanceof Error ? error_7.message : String(error_7),
+                    })];
+            case 6: return [2 /*return*/];
         }
-        catch (error) {
-            return [2 /*return*/, response_1.GlobleResponse.error({
-                    res: res,
-                    status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                    msg: error instanceof Error ? error.message : String(error),
-                })];
-        }
-        return [2 /*return*/];
     });
 }); };
 exports.updateQuotationItemById = updateQuotationItemById;
+var deleteQuotationItemById = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, userId, company, companyData, _b, quotation_id, item_Id, quotationWithItem, deleteItem, error_8;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 4, , 5]);
+                _a = req.user, userId = _a.userId, company = _a.company;
+                // Validate user and company
+                if (!userId || !company) {
+                    return [2 /*return*/, response_1.GlobleResponse.error({
+                            res: res,
+                            status: http_status_1.default.UNAUTHORIZED,
+                            msg: constant_1.ERROR_MSGS.AUTH_FAILED,
+                        })];
+                }
+                return [4 /*yield*/, companyRepository.findCompanyById(company)];
+            case 1:
+                companyData = _c.sent();
+                if (!companyData) {
+                    response_1.GlobleResponse.error({
+                        res: res,
+                        status: http_status_1.default.NOT_FOUND,
+                        msg: constant_1.ERROR_MSGS.COMAPNY_NOT_FOUND,
+                    });
+                    return [2 /*return*/];
+                }
+                _b = req.params, quotation_id = _b.quotation_id, item_Id = _b.item_Id;
+                return [4 /*yield*/, userQuotationRepository.checkQuotationItemExists(quotation_id, item_Id)];
+            case 2:
+                quotationWithItem = _c.sent();
+                if (!quotationWithItem) {
+                    return [2 /*return*/, response_1.GlobleResponse.error({
+                            res: res,
+                            status: http_status_1.default.NOT_FOUND,
+                            msg: constant_1.ERROR_MSGS.QUOTATION_ITEM_NOT_FOUND,
+                        })];
+                }
+                return [4 /*yield*/, userQuotationRepository.deleteQuotationItem(item_Id)];
+            case 3:
+                deleteItem = _c.sent();
+                if (deleteItem) {
+                    return [2 /*return*/, response_1.GlobleResponse.success({
+                            res: res,
+                            msg: constant_1.INFO_MSGS.QUOTATION_ITEM_DELETED_SUCCESSFULLY,
+                            status: http_status_1.default.OK,
+                        })];
+                }
+                return [3 /*break*/, 5];
+            case 4:
+                error_8 = _c.sent();
+                return [2 /*return*/, response_1.GlobleResponse.error({
+                        res: res,
+                        status: http_status_1.default.INTERNAL_SERVER_ERROR,
+                        msg: error_8 instanceof Error ? error_8.message : String(error_8),
+                    })];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); };
+exports.deleteQuotationItemById = deleteQuotationItemById;
+var generateQuotationPdf = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, userId, company, companyData, quotation_id, quotation, pdfDoc, error_9;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 4, , 5]);
+                _a = req.user, userId = _a.userId, company = _a.company;
+                // Validate user and company
+                if (!userId || !company) {
+                    return [2 /*return*/, response_1.GlobleResponse.error({
+                            res: res,
+                            status: http_status_1.default.UNAUTHORIZED,
+                            msg: constant_1.ERROR_MSGS.AUTH_FAILED,
+                        })];
+                }
+                return [4 /*yield*/, companyRepository.findCompanyById(company)];
+            case 1:
+                companyData = _b.sent();
+                if (!companyData) {
+                    response_1.GlobleResponse.error({
+                        res: res,
+                        status: http_status_1.default.NOT_FOUND,
+                        msg: constant_1.ERROR_MSGS.COMAPNY_NOT_FOUND,
+                    });
+                    return [2 /*return*/];
+                }
+                quotation_id = req.params.quotation_id;
+                return [4 /*yield*/, userQuotationRepository.findQuotationById(quotation_id)];
+            case 2:
+                quotation = _b.sent();
+                if (!quotation) {
+                    return [2 /*return*/, response_1.GlobleResponse.error({
+                            res: res,
+                            status: http_status_1.default.NOT_FOUND,
+                            msg: constant_1.ERROR_MSGS.QUOTATION_NOT_FOUND,
+                        })];
+                }
+                console.log(quotation);
+                return [4 /*yield*/, (0, pdfGenerator_1.generateQuotationPDF)(quotation)];
+            case 3:
+                pdfDoc = _b.sent();
+                return [2 /*return*/, response_1.GlobleResponse.success({
+                        res: res,
+                        data: {
+                            pdfDoc: pdfDoc,
+                            quotation: quotation
+                        }
+                    })];
+            case 4:
+                error_9 = _b.sent();
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); };
+exports.generateQuotationPdf = generateQuotationPdf;

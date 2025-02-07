@@ -15,6 +15,11 @@ router.put("/:quotation_id",QuotationController.updateQuation)
 router.delete('/:quotation_id',QuotationController.deleteQuotation)
 
 router.get("/:quotation_id/items",QuotationController.getQuotationItemsById)
+router.put("/:quotation_id/items/:item_Id",QuotationController.updateQuotationItemById)
+router.delete("/:quotation_id/items/:item_Id",QuotationController.deleteQuotationItemById)
+
+
+router.get("/:quotation_id/pdf/generate",QuotationController.generateQuotationPdf)
 
 
 
