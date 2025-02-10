@@ -41,10 +41,10 @@ export const STATUS_CODE = {
     JNO_ALREADY_EXISTS: "Quotation already exists with JNo",
     PRODUCT_ID_REQUIRED:"Product id is required",
     QUOTATION_NOT_FOUND:"Quotation not found",
-    QUOTATION_DELETE_FAILED:"Quotatio deletion failed",
+    QUOTATION_DELETE_FAILED:"Quotation deletion failed",
     NO_ITEMS_IN_QUOTATION :"Items not found in the quotation",
     QUOTATION_ITEM_NOT_FOUND:"Quotation of item not found ",
-    ITEM_UPDATION_FAILED:"Item updation is failed",
+    ITEM_UPDATION_FAILED:"Item update is failed",
 
 
     
@@ -80,11 +80,11 @@ export const STATUS_CODE = {
     MISSING_FEILDS:'Please provide all required fields',
     VALIDATION_ERROR:'Validation failed',
     INTERNAL_ERROR:'Internal server error',
-    INVALID_ID:'Invalid compnayId',
-    PASSWORD_MIN_LENGTH:'Password minimum need 6 charater',
+    INVALID_ID:'Invalid companyId',
+    PASSWORD_MIN_LENGTH:'Password minimum need 6 character',
     INVALID_PHONE:'Invalid phone number',
     
-    CUSTOMER_ALREADY_EXISTS : "Customer already exists the given detailes",
+    CUSTOMER_ALREADY_EXISTS : "Customer already exists the given details",
     NO_CUSTOMERS_FOUND:"No customers are connected with this company",
     CUSTOMER_NOT_FOUND:"Customer data not found",
     PRODUCT_NAME_EXISTS:"Product with this name already exists",
@@ -102,7 +102,7 @@ export const STATUS_CODE = {
     PASSWORD_CHANGED: 'Your password has been changed successfully.',
     RESET_EMAIL: 'Reset password email sent successfully.',
     COMPANY_CREATED_SUCCESSFULLY:"Company created successfully",
-    COMPANY_FETCHED:"Company fethed successfullt",
+    COMPANY_FETCHED:"Company fetched successfully",
     COMPANY_UPDATED_SUCCESSFULLY:"Company data updated successfully",
 
     EMAIL_VERIFIED: 'User Email verification successfully completed',
@@ -117,13 +117,13 @@ export const STATUS_CODE = {
     CUSTOMER_CREATED: "Customer created successfully",
     CUSTOMER_RETRIEVED:"Customer fetched successfully",
     CUSTOMERS_LISTED: "Company customers list fetched successfully",
-    CUSTOMER_UPDATED:"Customer updation compeleted successfully",
+    CUSTOMER_UPDATED:"Customer updating completed successfully",
     CUSTOMER_DELETED:"Customer deleted successfully",
 
 
     QUOTATION_CREATED:"Quotation created successfully",
     QUOTATION_RETRIEVED:"Quotation fetched successfully",
-    QUOTATION_UPDATED:"Quotation updation compeleted successfully",
+    QUOTATION_UPDATED:"Quotation updating completed successfully",
     QUOTATION_DELETED_SUCCESSFULL:"Quotation delete  successfully",
     ITEMS_FETCHED:"Items fetched successfully",
     ITEM_UPDATION_SUCCESSFULLY:"Item updated successfully",

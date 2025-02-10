@@ -186,7 +186,7 @@ var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 
                 response_1.GlobleResponse.success({
                     res: res,
                     status: http_status_1.default.CREATED,
-                    msg: constant_1.INFO_MSGS.COMPANY_CREATED_SUCCESSFULLY,
+                    msg: constant_1.INFO_MSGS.PRODUCT_CREATED_SUCCESSFULLY,
                     data: newProduct,
                 });
                 return [3 /*break*/, 6];

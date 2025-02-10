@@ -74,7 +74,6 @@ exports.validateCompanySchema = zod_1.z.object({
                 message: "State name cannot contain numbers"
             })
                 .transform(function (str) { return str.trim(); }),
-            isActive: zod_1.z.boolean()
         }))
             .optional()
             .default([])

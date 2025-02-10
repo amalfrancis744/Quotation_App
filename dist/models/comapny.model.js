@@ -51,6 +51,7 @@ var CompanySchema = new mongoose_1.Schema({
     },
     email: {
         type: String,
+        unique: true,
     },
     addresses: [
         {
@@ -59,7 +60,7 @@ var CompanySchema = new mongoose_1.Schema({
             pincode: { type: String },
             district: { type: String },
             state: { type: String },
-            isActive: { type: Boolean, required: true, default: true },
+            isActive: { type: Boolean, default: false },
         },
     ],
     accountDetails: [
@@ -69,7 +70,8 @@ var CompanySchema = new mongoose_1.Schema({
             mobileNo: { type: String, required: true },
             email: {
                 type: String,
-                required: true,
+                unique: true,
+                sparse: true
             },
         },
     ],

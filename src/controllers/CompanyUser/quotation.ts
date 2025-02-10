@@ -728,21 +728,14 @@ export const generateQuotationPdf = async (
         msg: ERROR_MSGS.QUOTATION_NOT_FOUND,
       });
     }
-    console.log(quotation)
-
     const pdfDoc = await generateQuotationPDF(quotation);
 
-
- 
-
-  return GlobleResponse.success({
-    res,
-    data:{
-      pdfDoc,
-      quotation
-
-    }
-  })
-
+    return GlobleResponse.success({
+      res,
+      data: {
+        pdfDoc,
+        quotation,
+      },
+    });
   } catch (error) {}
 };

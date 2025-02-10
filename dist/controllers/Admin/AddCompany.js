@@ -186,10 +186,11 @@ var createCompany = function (req, res) { return __awaiter(void 0, void 0, void 
                     })];
             case 4:
                 error_2 = _b.sent();
+                console.error(error_2);
                 return [2 /*return*/, response_1.GlobleResponse.error({
                         res: res,
                         status: http_status_1.default.INTERNAL_SERVER_ERROR,
-                        msg: constant_1.ERROR_MSGS.COMPANY_CREATION_FAILED,
+                        msg: error_2 instanceof Error ? error_2.message : String(error_2),
                     })];
             case 5: return [2 /*return*/];
         }

@@ -92,7 +92,6 @@ export const createCustomer = async (
       return GlobleResponse.success({
         res,
         msg: INFO_MSGS.CUSTOMER_CREATED,
-        data: newCustomer,
         status: httpStatus.CREATED,
       });
     }
@@ -231,7 +230,6 @@ export const updateCustomer = async (
       res,
       status: httpStatus.OK,
       msg: INFO_MSGS.CUSTOMER_UPDATED,
-      data: customer,
     });
   } catch (error) {
     return GlobleResponse.error({

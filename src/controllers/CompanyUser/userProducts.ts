@@ -119,7 +119,7 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
     GlobleResponse.success({
       res,
       status: httpStatus.CREATED,
-      msg: INFO_MSGS.COMPANY_CREATED_SUCCESSFULLY,
+      msg: INFO_MSGS.PRODUCT_CREATED_SUCCESSFULLY,
       data: newProduct,
     });
   } catch (error) {

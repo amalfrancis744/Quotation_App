@@ -152,7 +152,6 @@ var createCustomer = function (req, res) { return __awaiter(void 0, void 0, void
                     return [2 /*return*/, response_1.GlobleResponse.success({
                             res: res,
                             msg: constant_1.INFO_MSGS.CUSTOMER_CREATED,
-                            data: newCustomer,
                             status: http_status_1.default.CREATED,
                         })];
                 }
@@ -293,7 +292,6 @@ var updateCustomer = function (req, res) { return __awaiter(void 0, void 0, void
                         res: res,
                         status: http_status_1.default.OK,
                         msg: constant_1.INFO_MSGS.CUSTOMER_UPDATED,
-                        data: customer,
                     })];
             case 3:
                 error_4 = _c.sent();

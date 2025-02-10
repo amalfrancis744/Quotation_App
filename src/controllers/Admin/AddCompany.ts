@@ -41,7 +41,6 @@ export const getAllCompanies = async (
 export const createCompany = async (req: any, res: Response): Promise<void> => {
   try {
     const { adminId } = req.admin; // checking admin valid -token-middleware
-
     if (!adminId) {
       return GlobleResponse.error({
         res,
@@ -103,10 +102,11 @@ export const createCompany = async (req: any, res: Response): Promise<void> => {
       msg: INFO_MSGS.COMPANY_CREATED_SUCCESSFULLY,
     });
   } catch (error) {
+    console.error(error)
     return GlobleResponse.error({
       res,
       status: httpStatus.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.COMPANY_CREATION_FAILED,
+      msg: error instanceof Error ? error.message : String(error),
     });
   }
 };

@@ -81,7 +81,7 @@ export const validateCompanySchema = z.object({
         })
         .transform(str => str.trim()),
 
-      isActive: z.boolean()
+
     }))
     .optional()
     .default([])

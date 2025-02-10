@@ -59,11 +59,11 @@ var handleUploadError = function (error, req, res, next) {
             });
             return;
         }
-        res.status(400).json({ res: false, message: error.message });
+        res.status(400).json({ msg: error.message });
         return;
     }
     if (error) {
-        res.status(400).json({ res: false, message: error.message });
+        res.status(400).json({ msg: error.message });
         return;
     }
     next();

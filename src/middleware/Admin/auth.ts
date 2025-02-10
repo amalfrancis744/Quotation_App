@@ -27,7 +27,6 @@ export const adminAuthMiddleware = async (
         msg: ERROR_MSGS.INVALID_TOKEN,
       });
     }
-
     const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
 
     if (!token) {

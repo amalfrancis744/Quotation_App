@@ -18,6 +18,7 @@ const CompanySchema: Schema<ICompany> = new Schema(
     },
     email: {
       type: String,
+      unique:true,
     },
     addresses: [
       {
@@ -26,7 +27,7 @@ const CompanySchema: Schema<ICompany> = new Schema(
         pincode: { type: String },
         district: { type: String },
         state: { type: String },
-        isActive: { type: Boolean, required: true, default: true },
+        isActive: { type: Boolean,default: false },
       },
     ],
     accountDetails: [
@@ -36,7 +37,8 @@ const CompanySchema: Schema<ICompany> = new Schema(
         mobileNo: { type: String, required: true },
         email: {
           type: String,
-          required: true,
+          unique:true,
+          sparse:true
         },
       },
     ],

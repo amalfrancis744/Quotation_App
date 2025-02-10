@@ -38,9 +38,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var userAuthController = __importStar(require("../../controllers/CompanyUser/userAuth"));
+var validation_1 = require("../../middleware/Validation/validation");
+var resetPassword_validation_1 = require("../../middleware/Validation/companyUser/resetPassword.validation");
 var router = express_1.default.Router();
 router.post("/login", userAuthController.loginCompanyUser); // Company user login
 router.post("/forgotPassword", userAuthController.forgotPassword); // forgotPassword send mail with unique URL (token)
-router.post("/password-reset", userAuthController.resetPassword); //  changing password
+router.post("/password-reset", (0, validation_1.validateRequest)(resetPassword_validation_1.resetPasswordCompanyUserSchema), userAuthController.resetPassword); //  changing password
 router.get("/verify-token", userAuthController.verifyUrl); // for verifying the url 
 exports.default = router;

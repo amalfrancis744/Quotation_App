@@ -765,7 +765,6 @@ var generateQuotationPdf = function (req, res, next) { return __awaiter(void 0, 
                             msg: constant_1.ERROR_MSGS.QUOTATION_NOT_FOUND,
                         })];
                 }
-                console.log(quotation);
                 return [4 /*yield*/, (0, pdfGenerator_1.generateQuotationPDF)(quotation)];
             case 3:
                 pdfDoc = _b.sent();
@@ -773,8 +772,8 @@ var generateQuotationPdf = function (req, res, next) { return __awaiter(void 0, 
                         res: res,
                         data: {
                             pdfDoc: pdfDoc,
-                            quotation: quotation
-                        }
+                            quotation: quotation,
+                        },
                     })];
             case 4:
                 error_9 = _b.sent();
