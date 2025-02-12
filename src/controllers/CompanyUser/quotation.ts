@@ -238,6 +238,7 @@ export const getQuotation = async (
     }
     return GlobleResponse.success({
       res,
+      status: httpStatus.OK,
       data: quotation,
       msg: INFO_MSGS.QUOTATION_RETRIEVED,
     });

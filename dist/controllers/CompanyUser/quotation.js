@@ -312,6 +312,7 @@ var getQuotation = function (req, res, next) { return __awaiter(void 0, void 0, 
                 }
                 return [2 /*return*/, response_1.GlobleResponse.success({
                         res: res,
+                        status: http_status_1.default.OK,
                         data: quotation,
                         msg: constant_1.INFO_MSGS.QUOTATION_RETRIEVED,
                     })];
