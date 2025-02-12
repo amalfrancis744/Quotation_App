@@ -50,10 +50,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateQuotationPDF = void 0;
 var pdfmake_1 = __importDefault(require("pdfmake"));
-var fs_1 = __importDefault(require("fs"));
-var path_1 = __importDefault(require("path"));
 var generateQuotationPDF = function (quotation) { return __awaiter(void 0, void 0, void 0, function () {
-    var fonts, printer, docDefinition, pdfDoc_1, uploadsDir, quotationsDir, filename_1, filePath_1;
+    var fonts, printer, docDefinition, pdfDoc;
     var _a, _b, _c, _d;
     return __generator(this, function (_e) {
         try {
@@ -256,26 +254,25 @@ var generateQuotationPDF = function (quotation) { return __awaiter(void 0, void 
                     }
                 }
             };
-            pdfDoc_1 = printer.createPdfKitDocument(docDefinition);
-            uploadsDir = path_1.default.join(__dirname, '../uploads');
-            if (!fs_1.default.existsSync(uploadsDir))
-                fs_1.default.mkdirSync(uploadsDir, { recursive: true });
-            quotationsDir = path_1.default.join(uploadsDir, 'quotations');
-            if (!fs_1.default.existsSync(quotationsDir))
-                fs_1.default.mkdirSync(quotationsDir, { recursive: true });
-            filename_1 = "quotation_".concat(quotation._id, "_").concat(Date.now(), ".pdf");
-            filePath_1 = path_1.default.join(quotationsDir, filename_1);
-            return [2 /*return*/, new Promise(function (resolve, reject) {
-                    var writeStream = fs_1.default.createWriteStream(filePath_1);
-                    writeStream.on('finish', function () { return resolve({
-                        success: true,
-                        filepath: filePath_1,
-                        filename: filename_1
-                    }); });
-                    writeStream.on('error', reject);
-                    pdfDoc_1.pipe(writeStream);
-                    pdfDoc_1.end();
-                })];
+            pdfDoc = printer.createPdfKitDocument(docDefinition);
+            // // Directory handling and file writing remains the same
+            // const uploadsDir = path.join(__dirname, '../uploads');
+            // if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+            // const quotationsDir = path.join(uploadsDir, 'quotations');
+            // if (!fs.existsSync(quotationsDir)) fs.mkdirSync(quotationsDir, { recursive: true });
+            // const filename = `quotation_${quotation._id}_${Date.now()}.pdf`;
+            // const filePath = path.join(quotationsDir, filename);
+            // return new Promise((resolve, reject) => {
+            //     const writeStream = fs.createWriteStream(filePath);
+            //     writeStream.on('finish', () => resolve({ 
+            //         success: true, 
+            //         filepath: filePath, 
+            //         filename: filename 
+            //     }));
+            //     writeStream.on('error', reject);
+            //     pdfDoc.pipe(writeStream);
+            //     pdfDoc.end();
+            // });
         }
         catch (error) {
             console.error('Error generating PDF:', error);

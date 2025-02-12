@@ -97,6 +97,7 @@ exports.INFO_MSGS = {
     COMPANY_CREATED_SUCCESSFULLY: "Company created successfully",
     COMPANY_FETCHED: "Company fetched successfully",
     COMPANY_UPDATED_SUCCESSFULLY: "Company data updated successfully",
+    ALL_COMPANY_FETCHED: "Companies fetched successfully.",
     EMAIL_VERIFIED: 'User Email verification successfully completed',
     TOKEN_VALID: 'Token validation is completed successfully',
     USER_DATA_FETCHED: "User data fetched successfully",

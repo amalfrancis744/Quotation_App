@@ -86,7 +86,7 @@ var nodemailer_1 = require("../../services/nodemailer");
 dotenv_1.default.config();
 // for company user login
 var loginCompanyUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, user, checkPassword, SCERET_KEY, token, userResponse, error_1;
+    var _a, email, password, user, checkPassword, SCERET_KEY, token, error_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -129,15 +129,15 @@ var loginCompanyUser = function (req, res) { return __awaiter(void 0, void 0, vo
                 }, SCERET_KEY, {
                     expiresIn: "1h",
                 });
-                userResponse = {
-                    _id: user._id,
-                    email: user.email,
-                };
+                // const userResponse = {
+                //   _id: user._id,
+                //   email: user.email,
+                // };
                 return [2 /*return*/, response_1.GlobleResponse.success({
                         res: res,
                         status: http_status_1.default.OK,
                         data: {
-                            user: userResponse,
+                            // user: userResponse,
                             token: token,
                         },
                         msg: constant_1.INFO_MSGS.SUCCESSFUL_LOGIN,

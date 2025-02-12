@@ -34,18 +34,23 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = __importStar(require("mongoose"));
-var quotationSchema = new mongoose_1.default.Schema({
+var QuotationItemSchema = new mongoose_1.Schema({
+    product: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "Product" },
+    quantity: { type: Number, required: true },
+    price: { type: Number, required: true },
+});
+// Transform for QuotationItem
+QuotationItemSchema.set("toJSON", {
+    transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+    },
+});
+var quotationSchema = new mongoose_1.Schema({
     contractor: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "Customer" },
     company: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "Company" },
-    items: [
-        {
-            product: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "Product" },
-            quantity: { type: Number, required: true },
-            price: { type: Number, required: true },
-        },
-    ],
+    items: [QuotationItemSchema],
     totalAmount: { type: Number, required: true },
-    // Additional Fields
     jNo: { type: String, unique: true },
     party: { type: String },
     email: { type: String },
@@ -53,20 +58,34 @@ var quotationSchema = new mongoose_1.default.Schema({
     salesMan: { type: String },
     grossAmount: { type: Number },
     netAmount: { type: Number },
-    discPercentage: { type: Number }, // Discount Percentage
+    discPercentage: { type: Number },
     overallDiscount: {
-        percentage: { type: Number }, // Overall Discount Percentage
-        amount: { type: Number }, // Overall Discount Amount in Rs
+        percentage: { type: Number },
+        amount: { type: Number },
     },
     quotationFormat: {
         type: String,
-        enum: ["gstWithoutRate", "gstWithRate", "gst"], // Quotation format options
+        enum: ["gstWithoutRate", "gstWithRate", "gst"],
         default: "gstWithoutRate",
     },
     isDeleted: { type: Boolean, default: false },
     deletedAt: { type: Date },
     deletedBy: { type: mongoose_1.Schema.Types.ObjectId, ref: "User" },
-    status: { type: String, enum: ["pending", "approved", "rejected", "expired"], default: "pending" }
-}, { timestamps: true });
+    status: {
+        type: String,
+        enum: ["pending", "approved", "rejected", "expired"],
+        default: "pending",
+    },
+}, {
+    timestamps: true,
+});
+// Transform for main schema
+quotationSchema.set("toJSON", {
+    transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+    },
+});
 var Quotation = mongoose_1.default.model("Quotation", quotationSchema);
 exports.default = Quotation;

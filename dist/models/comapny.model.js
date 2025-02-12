@@ -35,6 +35,40 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Company = void 0;
 var mongoose_1 = __importStar(require("mongoose"));
+var AddressSchema = new mongoose_1.Schema({
+    address: { type: String },
+    city: { type: String },
+    pincode: { type: String },
+    district: { type: String },
+    state: { type: String },
+    isActive: { type: Boolean, default: false },
+});
+// Add a transform to rename `_id` to `id` for addresses
+AddressSchema.set("toJSON", {
+    transform: function (doc, ret) {
+        ret.id = ret._id; // Rename `_id` to `id`
+        delete ret._id; // Remove `_id`
+    },
+});
+// Define the AccountDetails schema
+var AccountDetailsSchema = new mongoose_1.Schema({
+    name: { type: String, required: true },
+    accType: { type: String, required: true },
+    mobileNo: { type: String, required: true },
+    email: {
+        type: String,
+        unique: true,
+        sparse: true,
+    },
+});
+// Add a transform to rename `_id` to `id` for accountDetails
+AccountDetailsSchema.set("toJSON", {
+    transform: function (doc, ret) {
+        ret.id = ret._id; // Rename `_id` to `id`
+        delete ret._id; // Remove `_id`
+    },
+});
+// Define the Company schema
 var CompanySchema = new mongoose_1.Schema({
     companyName: {
         type: String,
@@ -53,28 +87,8 @@ var CompanySchema = new mongoose_1.Schema({
         type: String,
         unique: true,
     },
-    addresses: [
-        {
-            address: { type: String },
-            city: { type: String },
-            pincode: { type: String },
-            district: { type: String },
-            state: { type: String },
-            isActive: { type: Boolean, default: false },
-        },
-    ],
-    accountDetails: [
-        {
-            name: { type: String, required: true },
-            accType: { type: String, required: true },
-            mobileNo: { type: String, required: true },
-            email: {
-                type: String,
-                unique: true,
-                sparse: true
-            },
-        },
-    ],
+    addresses: [AddressSchema], // Use the Address schema
+    accountDetails: [AccountDetailsSchema], // Use the AccountDetails schema
     website: {
         type: String,
     },
@@ -89,5 +103,13 @@ var CompanySchema = new mongoose_1.Schema({
     },
 }, {
     timestamps: true,
+});
+// Add a transform to rename `_id` to `id` for the Company schema
+CompanySchema.set("toJSON", {
+    transform: function (doc, ret) {
+        ret.id = ret._id; // Rename `_id` to `id`
+        delete ret._id; // Remove `_id`
+        delete ret.__v; // Remove version key (if not already disabled)
+    },
 });
 exports.Company = mongoose_1.default.model("Company", CompanySchema);

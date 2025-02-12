@@ -42,7 +42,7 @@ export const findUserById = async (id: string) => {
       createdAt
       updatedAt`,
       model: 'Company'
-    });;
+    })
     return user;
   } catch (error) {
     console.error("Error in findByIdAndUpdate:", error);

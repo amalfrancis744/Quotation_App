@@ -97,7 +97,6 @@ var findUserById = function (id) { return __awaiter(void 0, void 0, void 0, func
                     })];
             case 1:
                 user = _a.sent();
-                ;
                 return [2 /*return*/, user];
             case 2:
                 error_3 = _a.sent();

@@ -117,6 +117,7 @@ var getAllCompanies = function (req, res) { return __awaiter(void 0, void 0, voi
                 return [2 /*return*/, response_1.GlobleResponse.success({
                         res: res,
                         status: http_status_1.default.OK,
+                        msg: constant_1.INFO_MSGS.ALL_COMPANY_FETCHED,
                         data: companies,
                     })];
             case 2:

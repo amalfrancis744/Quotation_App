@@ -103,7 +103,7 @@ var findQuotationById = function (id) { return __awaiter(void 0, void 0, void 0,
                             path: 'items.product',
                             select: 'name price description',
                         },
-                    ]).lean()];
+                    ])];
             case 1:
                 quotation = _a.sent();
                 return [2 /*return*/, quotation];

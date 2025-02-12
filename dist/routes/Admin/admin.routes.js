@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var adminController = __importStar(require("..//../controllers/Admin/adminAuth"));
 var companyController = __importStar(require("../../controllers/Admin/AddCompany"));
-var companyUserController = __importStar(require("..//../controllers/Admin/addCompanyUser"));
+var companyUserController = __importStar(require("../../controllers/Admin/addCompanyUser"));
 var auth_1 = require("../../middleware/Admin/auth");
 var validation_1 = require("../../middleware/Validation/validation");
 var admin_validation_1 = require("../../middleware/Validation/admin/admin.validation");

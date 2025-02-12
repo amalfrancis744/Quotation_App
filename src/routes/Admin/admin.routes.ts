@@ -1,7 +1,7 @@
 import express from "express";
 import * as adminController from "..//../controllers/Admin/adminAuth";
 import * as companyController from "../../controllers/Admin/AddCompany";
-import * as companyUserController from "..//../controllers/Admin/addCompanyUser"
+import * as companyUserController from "../../controllers/Admin/addCompanyUser"
 import { adminAuthMiddleware } from "../../middleware/Admin/auth";
 import { validateRequest } from "../../middleware/Validation/validation";
 import { adminRegisterSchema } from "../../middleware/Validation/admin/admin.validation";

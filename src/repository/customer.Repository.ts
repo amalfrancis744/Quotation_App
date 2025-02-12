@@ -97,12 +97,12 @@ export const FindCustomerByAll = async (
 ) => {
   try {
     const [nameExists, emailExists, mobileExists] = await Promise.all([
-      name ? Customer.findOne({ name, company }).lean() : Promise.resolve(null),
+      name ? Customer.findOne({ name, company }) : Promise.resolve(null),
       email
-        ? Customer.findOne({ email, company }).lean()
+        ? Customer.findOne({ email, company })
         : Promise.resolve(null),
       mobileNo
-        ? Customer.findOne({ mobileNo, company }).lean()
+        ? Customer.findOne({ mobileNo, company })
         : Promise.resolve(null),
     ]);
 

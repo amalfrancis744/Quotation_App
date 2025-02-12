@@ -47,7 +47,7 @@ export const findWithFeild = async (jNo: string) => {
               path: 'items.product',
               select: 'name price description',
             },
-          ]).lean()
+          ])
         return quotation;
     } catch (error) {
         console.error('Error in findQuotationById:', error);

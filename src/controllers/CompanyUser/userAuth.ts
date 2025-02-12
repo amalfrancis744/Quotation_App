@@ -59,16 +59,16 @@ export const loginCompanyUser = async (
       }
     );
 
-    const userResponse = {
-      _id: user._id,
-      email: user.email,
-    };
+    // const userResponse = {
+    //   _id: user._id,
+    //   email: user.email,
+    // };
 
     return GlobleResponse.success({
       res,
       status: httpStatus.OK,
       data: {
-        user: userResponse,
+        // user: userResponse,
         token,
       },
       msg: INFO_MSGS.SUCCESSFUL_LOGIN,

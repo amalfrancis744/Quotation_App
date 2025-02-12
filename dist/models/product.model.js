@@ -59,5 +59,12 @@ var productSchema = new mongoose_1.default.Schema({
     deletedAt: { type: Date },
     deletedBy: { type: mongoose_1.Schema.Types.ObjectId, ref: "User" },
 }, { timestamps: true });
+productSchema.set("toJSON", {
+    transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+    },
+});
 var Product = mongoose_1.default.model("Product", productSchema);
 exports.default = Product;

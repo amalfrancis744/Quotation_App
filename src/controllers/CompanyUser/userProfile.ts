@@ -30,6 +30,7 @@ export const getUserProfile = async (
 
     // Fetch user data
     const userData = await userRepository.findUserById(userId as string);
+
     if (!userData) {
       return GlobleResponse.error({
         res,

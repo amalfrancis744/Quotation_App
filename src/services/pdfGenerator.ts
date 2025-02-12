@@ -215,27 +215,27 @@ export const generateQuotationPDF = async (quotation: any) => {
         // Create PDF document
         const pdfDoc = printer.createPdfKitDocument(docDefinition);
 
-        // Directory handling and file writing remains the same
-        const uploadsDir = path.join(__dirname, '../uploads');
-        if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+        // // Directory handling and file writing remains the same
+        // const uploadsDir = path.join(__dirname, '../uploads');
+        // if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
         
-        const quotationsDir = path.join(uploadsDir, 'quotations');
-        if (!fs.existsSync(quotationsDir)) fs.mkdirSync(quotationsDir, { recursive: true });
+        // const quotationsDir = path.join(uploadsDir, 'quotations');
+        // if (!fs.existsSync(quotationsDir)) fs.mkdirSync(quotationsDir, { recursive: true });
 
-        const filename = `quotation_${quotation._id}_${Date.now()}.pdf`;
-        const filePath = path.join(quotationsDir, filename);
+        // const filename = `quotation_${quotation._id}_${Date.now()}.pdf`;
+        // const filePath = path.join(quotationsDir, filename);
 
-        return new Promise((resolve, reject) => {
-            const writeStream = fs.createWriteStream(filePath);
-            writeStream.on('finish', () => resolve({ 
-                success: true, 
-                filepath: filePath, 
-                filename: filename 
-            }));
-            writeStream.on('error', reject);
-            pdfDoc.pipe(writeStream);
-            pdfDoc.end();
-        });
+        // return new Promise((resolve, reject) => {
+        //     const writeStream = fs.createWriteStream(filePath);
+        //     writeStream.on('finish', () => resolve({ 
+        //         success: true, 
+        //         filepath: filePath, 
+        //         filename: filename 
+        //     }));
+        //     writeStream.on('error', reject);
+        //     pdfDoc.pipe(writeStream);
+        //     pdfDoc.end();
+        // });
 
     } catch (error) {
         console.error('Error generating PDF:', error);

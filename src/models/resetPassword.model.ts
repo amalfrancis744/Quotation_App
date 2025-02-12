@@ -21,6 +21,13 @@ const ResetPasswordSchema: Schema<IResetPassword> =
       timestamps: true,
     }
   );
+ResetPasswordSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+  },
+});
 
 const ResetPassword = mongoose.model<IResetPassword>(
   "ResetPassword",

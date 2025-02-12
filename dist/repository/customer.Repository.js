@@ -139,12 +139,12 @@ var FindCustomerByAll = function (name, email, company, mobileNo) { return __awa
             case 0:
                 _b.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, Promise.all([
-                        name ? customer_model_1.default.findOne({ name: name, company: company }).lean() : Promise.resolve(null),
+                        name ? customer_model_1.default.findOne({ name: name, company: company }) : Promise.resolve(null),
                         email
-                            ? customer_model_1.default.findOne({ email: email, company: company }).lean()
+                            ? customer_model_1.default.findOne({ email: email, company: company })
                             : Promise.resolve(null),
                         mobileNo
-                            ? customer_model_1.default.findOne({ mobileNo: mobileNo, company: company }).lean()
+                            ? customer_model_1.default.findOne({ mobileNo: mobileNo, company: company })
                             : Promise.resolve(null),
                     ])];
             case 1:

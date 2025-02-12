@@ -32,6 +32,7 @@ export const getAllCompanies = async (
     return GlobleResponse.success({
       res,
       status: httpStatus.OK,
+      msg: INFO_MSGS.ALL_COMPANY_FETCHED,
       data: companies,
     });
   } catch (error) {}
