@@ -61,7 +61,7 @@ var S3Service = /** @class */ (function () {
                             Bucket: this.bucket,
                             Key: key,
                         });
-                        return [4 /*yield*/, (0, s3_request_presigner_1.getSignedUrl)(this.s3Client, command, { expiresIn: 600000 })];
+                        return [4 /*yield*/, (0, s3_request_presigner_1.getSignedUrl)(this.s3Client, command)];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         error_1 = _a.sent();
@@ -116,7 +116,6 @@ var S3Service = /** @class */ (function () {
                     case 2:
                         newFileName = this.generateFileName(file);
                         key = "products/".concat(newFileName);
-                        console.log("key new ", key);
                         command = new client_s3_1.PutObjectCommand({
                             Bucket: this.bucket,
                             Key: key,

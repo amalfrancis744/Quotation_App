@@ -25,7 +25,7 @@ export class S3Service {
         Key: key,
       });
 
-      return await getSignedUrl(this.s3Client, command, { expiresIn: 600000 });
+      return await getSignedUrl(this.s3Client, command);
     } catch (error) {
       console.error("Error generating signed URL:", error);
       throw error;
@@ -62,7 +62,6 @@ export class S3Service {
       // Generate new filename and set path
       const newFileName = this.generateFileName(file);
       const key = `products/${newFileName}`;
-      console.log("key new ", key);
 
       // Create upload command
       const command = new PutObjectCommand({

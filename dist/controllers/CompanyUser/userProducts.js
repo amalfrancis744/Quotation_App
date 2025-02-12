@@ -93,11 +93,11 @@ var companyRepository = __importStar(require("../../repository/company.Repositor
 var processProductUrl_1 = require("../../utils/processProductUrl");
 // Create a new product
 var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, userId, company, companyData, file, s3Service, signedUrl, _b, name_1, category, sukCode, hsn, description, gstPercentage, discountPercentage, mrp, saleRate, excubleGST, productData, existingProduct, newProduct, error_1;
+    var _a, userId, company, companyData, file, signedUrl, _b, name_1, category, sukCode, hsn, description, gstPercentage, discountPercentage, mrp, saleRate, excubleGST, productData, existingProduct, newProduct, error_1;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                _c.trys.push([0, 5, , 6]);
+                _c.trys.push([0, 4, , 5]);
                 _a = req.user, userId = _a.userId, company = _a.company;
                 if (!userId || !company) {
                     response_1.GlobleResponse.error({
@@ -127,11 +127,7 @@ var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 
                     return [2 /*return*/];
                 }
                 file = req.file;
-                s3Service = new s3_service_1.S3Service();
-                return [4 /*yield*/, s3Service.getSignedUrl(file.key)];
-            case 2:
-                signedUrl = _c.sent();
-                console.log("signedUrl===>", signedUrl);
+                signedUrl = file.location;
                 _b = req.body, name_1 = _b.name, category = _b.category, sukCode = _b.sukCode, hsn = _b.hsn, description = _b.description, gstPercentage = _b.gstPercentage, discountPercentage = _b.discountPercentage, mrp = _b.mrp, saleRate = _b.saleRate, excubleGST = _b.excubleGST;
                 if (!name_1 ||
                     !category ||
@@ -170,7 +166,7 @@ var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 
                         sukCode: sukCode,
                         isDeleted: false,
                     })];
-            case 3:
+            case 2:
                 existingProduct = _c.sent();
                 if (existingProduct) {
                     response_1.GlobleResponse.error({
@@ -181,7 +177,7 @@ var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 
                     return [2 /*return*/];
                 }
                 return [4 /*yield*/, userProductRepository.InsertData(productData)];
-            case 4:
+            case 3:
                 newProduct = _c.sent();
                 response_1.GlobleResponse.success({
                     res: res,
@@ -189,28 +185,28 @@ var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 
                     msg: constant_1.INFO_MSGS.PRODUCT_CREATED_SUCCESSFULLY,
                     data: newProduct,
                 });
-                return [3 /*break*/, 6];
-            case 5:
+                return [3 /*break*/, 5];
+            case 4:
                 error_1 = _c.sent();
                 return [2 /*return*/, response_1.GlobleResponse.error({
                         res: res,
                         status: http_status_1.default.INTERNAL_SERVER_ERROR,
                         msg: error_1 instanceof Error ? error_1.message : String(error_1),
                     })];
-            case 6: return [2 /*return*/];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
 exports.createProduct = createProduct;
 // List all products for the current company
 var getCompanyProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, userId, company, comapnyData, page, limit, sortBy, order, includeDeleted, skip, filter, products, ProductsList, totalProducts, error_2;
+    var _a, userId, company, comapnyData, page, limit, sortBy, order, includeDeleted, skip, filter, products, totalProducts, error_2;
     var _b;
     var _c;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
-                _d.trys.push([0, 5, , 6]);
+                _d.trys.push([0, 4, , 5]);
                 _a = req.user, userId = _a.userId, company = _a.company;
                 if (!userId || !company) {
                     return [2 /*return*/, response_1.GlobleResponse.error({
@@ -243,20 +239,17 @@ var getCompanyProducts = function (req, res) { return __awaiter(void 0, void 0, 
                     })];
             case 2:
                 products = _d.sent();
-                return [4 /*yield*/, (0, processProductUrl_1.processProductUrl)([products])];
-            case 3:
-                ProductsList = (_d.sent())[0];
                 return [4 /*yield*/, userProductRepository.CountAllProducts({
                         company: company,
                     })];
-            case 4:
+            case 3:
                 totalProducts = _d.sent();
                 response_1.GlobleResponse.success({
                     res: res,
                     status: http_status_1.default.OK,
                     msg: constant_1.INFO_MSGS.COMPANY_PRODUCT_FETCHED,
                     data: {
-                        ProductsList: ProductsList,
+                        ProductsList: products,
                         pagination: {
                             currentPage: page,
                             totalPages: Math.ceil(totalProducts / limit),
@@ -265,15 +258,15 @@ var getCompanyProducts = function (req, res) { return __awaiter(void 0, void 0, 
                         },
                     },
                 });
-                return [3 /*break*/, 6];
-            case 5:
+                return [3 /*break*/, 5];
+            case 4:
                 error_2 = _d.sent();
                 return [2 /*return*/, response_1.GlobleResponse.error({
                         res: res,
                         status: http_status_1.default.INTERNAL_SERVER_ERROR,
                         msg: error_2 instanceof Error ? error_2.message : String(error_2),
                     })];
-            case 6: return [2 /*return*/];
+            case 5: return [2 /*return*/];
         }
     });
 }); };

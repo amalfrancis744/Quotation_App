@@ -44,9 +44,9 @@ export const createProduct = async (req: any, res: Response): Promise<void> => {
 
     const file = req.file as Express.MulterS3.File;
     // AWS s3 object  and generating image URL
-    const s3Service = new S3Service();
-    const signedUrl = await s3Service.getSignedUrl(file.key);
-    console.log("signedUrl===>", signedUrl);
+    // const s3Service = new S3Service();
+    // const signedUrl = await s3Service.getSignedUrl(file.key);
+    const signedUrl = file.location 
 
     const {
       name,
@@ -176,7 +176,7 @@ export const getCompanyProducts = async (
       limit,
       sort: { [sortBy]: order },
     });
-    const [ProductsList] = await processProductUrl([products]);
+    // const [ProductsList] = await processProductUrl([products]);
 
     // total count pf products for pagination
     const totalProducts = await userProductRepository.CountAllProducts({
@@ -188,7 +188,7 @@ export const getCompanyProducts = async (
       status: httpStatus.OK,
       msg: INFO_MSGS.COMPANY_PRODUCT_FETCHED,
       data: {
-        ProductsList,
+        ProductsList:products,
         pagination: {
           currentPage: page,
           totalPages: Math.ceil(totalProducts / limit),
