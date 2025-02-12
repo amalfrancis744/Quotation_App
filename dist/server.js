@@ -22,7 +22,7 @@ app.use("/api", routes_1.apiRouter);
 app.use((0, cors_1.default)(corsOptions));
 // Basic route
 app.get("/", function (req, res) {
-    res.send("Hello welcome to backend!");
+    res.send("Hello welcome to backend ,WOW!");
 });
 // db connection
 (0, DBconnection_1.default)();

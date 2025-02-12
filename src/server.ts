@@ -22,7 +22,7 @@ app.use(cors(corsOptions));
 
 // Basic route
 app.get("/", (req, res) => {
-  res.send("Hello welcome to backend!");
+  res.send("Hello welcome to backend ,WOW!");
 });
 
 // db connection
