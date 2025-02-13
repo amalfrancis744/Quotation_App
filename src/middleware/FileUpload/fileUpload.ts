@@ -1,25 +1,10 @@
 import multer from "multer";
-import multerS3 from "multer-s3";
 import path from "path";
 import { randomUUID } from "crypto";
 import { Request, Response, NextFunction } from "express";
 import { s3Client } from "../../config/s3.config";
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { ERROR_MSGS } from "../../utils/constant";
-
-// Allowed file types and size
-const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-
-
-// File filter function
-const fileFilter = (req: Request, file: Express.Multer.File, cb: Function) => {
-  if (!ALLOWED_FILE_TYPES.includes(file.mimetype)) {
-    return cb(new Error(ERROR_MSGS.INVALID_FILE_TYPE), false);
-  }
-  cb(null, true);
-};
-
-
 
 // Generate unique filename
 export const generateFileName = (file: Express.Multer.File): string => {
@@ -27,31 +12,65 @@ export const generateFileName = (file: Express.Multer.File): string => {
   return `${randomUUID()}${fileExtension}`;
 };
 
-// S3 upload configuration
-export const uploadS3 = multer({
-  limits: {
-    fileSize: MAX_FILE_SIZE,
-    files:1
-  },
-  fileFilter,
-  storage: multerS3({
-    s3: s3Client,
-    bucket: process.env.AWS_BUCKET_NAME || "",
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    metadata: (req: Request, file: Express.Multer.File, cb: Function) => {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: (req: Request, file: Express.Multer.File, cb: Function) => {
-      const fileName = generateFileName(file);
-      const folderPath = "products";
-      cb(null, `${folderPath}/${fileName}`);
-    },
-  }),
-});
+// Generate S3 public URL
+const getS3Location = (bucket: string, region: string, key: string): string => {
+  return `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
+};
+
+// Middleware to handle S3 upload
+export const uploadToS3 = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.file) {
+    return GlobleResponse.error({
+      res,
+      status: httpStatus.BAD_REQUEST,
+      msg: "No file uploaded",
+    });
+  }
+
+  try {
+    const fileName = generateFileName(req.file);
+    const folderPath = "products";
+    const key = `${folderPath}/${fileName}`;
+    const bucket = process.env.AWS_BUCKET_NAME!;
+    const region = process.env.AWS_REGION || "us-east-1";
+
+    const command = new PutObjectCommand({
+      Bucket: bucket,
+      Key: key,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+      Metadata: {
+        fieldName: req.file.fieldname,
+      },
+    });
+
+    await s3Client.send(command);
+
+    // Enrich req.file with S3 metadata
+    Object.assign(req.file, {
+      key,
+      location: getS3Location(bucket, region, key),
+      bucket,
+      acl: "public-read",
+      metadata: {
+        fieldName: req.file.fieldname,
+      },
+    });
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Error handler middleware
 import { ErrorRequestHandler } from "express";
 import { GlobleResponse } from "../../utils/response";
-import httpStatus from 'http-status';
+import httpStatus from "http-status";
 
 export const handleUploadError: ErrorRequestHandler = (
   error: any,
@@ -64,20 +83,19 @@ export const handleUploadError: ErrorRequestHandler = (
       GlobleResponse.error({
         msg: ERROR_MSGS.FILE_SIZE_EXCEEDED,
         res,
-        status: httpStatus.INTERNAL_SERVER_ERROR
+        status: httpStatus.INTERNAL_SERVER_ERROR,
       });
       return;
     }
-    res.status(400).json({  msg: error.message });
+    res.status(400).json({ msg: error.message });
     return;
   }
 
   if (error) {
-    res.status(400).json({  msg: error.message });
+    res.status(400).json({ msg: error.message });
     return;
   }
   next();
 };
 
 // Upload middleware for single file
-export const uploadSingle = uploadS3.single("file");

@@ -42,10 +42,15 @@ var fileUpload_1 = require("../../middleware/FileUpload/fileUpload");
 var validation_1 = require("../../middleware/Validation/validation");
 var product_validate_1 = require("../../middleware/Validation/product/product.validate");
 var updateProduct_validate_1 = require("../../middleware/Validation/product/updateProduct.validate");
+var formValidation_1 = require("../../middleware/Validation/formValidation");
 var router = express_1.default.Router();
-router.post("/create", fileUpload_1.uploadS3.single('productImage'), fileUpload_1.handleUploadError, (0, validation_1.validateRequest)(product_validate_1.productSchema), UserProductController.createProduct); //create a product
+router.post("/create", formValidation_1.uploadMemory.single("productImage"), // Parse into memory
+fileUpload_1.handleUploadError, // Handle multer errors
+(0, validation_1.validateRequest)(product_validate_1.productSchema), // Validate body/fields
+fileUpload_1.uploadToS3, // Upload to S3 only if validation passes
+UserProductController.createProduct);
 router.get("/company-products", UserProductController.getCompanyProducts); // get all company products
-router.get('/:product_id', UserProductController.getProduct); // get a specific product
-router.put("/:product_id", fileUpload_1.uploadS3.single("productImage"), (0, validation_1.validateRequest)(updateProduct_validate_1.updateProductSchema), UserProductController.updateProduct); //update a specific product with id
+router.get("/:product_id", UserProductController.getProduct); // get a specific product
+router.put("/:product_id", formValidation_1.uploadMemory.single("productImage"), fileUpload_1.handleUploadError, (0, validation_1.validateRequest)(updateProduct_validate_1.updateProductSchema), fileUpload_1.uploadToS3, UserProductController.updateProduct); //update a specific product with id
 router.delete("/:product_id", UserProductController.deleteProduct); // delete a specific product with id
 exports.default = router;

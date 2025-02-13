@@ -199,10 +199,11 @@ var forgotPassword = function (req, res) { return __awaiter(void 0, void 0, void
             case 4:
                 tokenDetail = _a.sent();
                 url = "".concat(process.env.BACKEND_URL, "/auth/verify-token?id=").concat(tokenDetail.userId, "&token=").concat(tokenDetail.resetToken);
-                console.log("reset url==>", url);
+                // console.log("reset url==>", url);
                 // Send reset password email to user
                 return [4 /*yield*/, (0, nodemailer_1.forgetPasswordMail)(url, email)];
             case 5:
+                // console.log("reset url==>", url);
                 // Send reset password email to user
                 _a.sent();
                 return [2 /*return*/, response_1.GlobleResponse.success({

@@ -123,7 +123,7 @@ export const forgotPassword = async (
     });
     // Generate password reset URL with token
     let url = `${process.env.BACKEND_URL}/auth/verify-token?id=${tokenDetail.userId}&token=${tokenDetail.resetToken}`;
-    console.log("reset url==>", url);
+    // console.log("reset url==>", url);
     // Send reset password email to user
     await forgetPasswordMail(url, email);
 
